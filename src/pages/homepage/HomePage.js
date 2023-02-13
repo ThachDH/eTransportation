@@ -6,6 +6,7 @@ import React from 'react'
 import logo from "../../assets/header-background.jpg";
 import SearchBar from "../../components/searchRoute/SearchBar";
 import './HomePage.scss';
+import { useContext } from "react";
 const HomePage = () => {
     return (
         <>

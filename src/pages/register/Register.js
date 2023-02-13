@@ -14,25 +14,85 @@ import Navigation from '../../components/navigation/Nav';
 import { Nav } from 'react-bootstrap';
 import '../login/index.scss'
 import { IconButton } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-
-
+import { Alarm, Visibility, VisibilityOff } from '@mui/icons-material';
+import { useState } from 'react';
+import HomePage from '../homepage/HomePage';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 
 export default function Register() {
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+    const [kq, setState] = useState({
+        alert: {
+            isOpen: false,
+            message: 'Lỗi không xác định!',
+            duration: 10000,
+            type: 'info'
+        }
+    });
     const theme = createTheme();
     const [showPassword, setShowPassword] = React.useState(false);
+    const [getFullName, setFullName] = useState("");
+    const [getEmail, setEmail] = useState("");
+    const [getPass, setPass] = useState("")
+    const [getNumber, setNumber] = useState("")
+
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleRegister = (e) => {
 
-    const handleMouseDownPassword = (
-        event: React.MouseEvent<HTMLButtonElement>
-    ) => {
-        event.preventDefault();
-    };
+        let dataSend = {
+            email: getEmail,
+            name: getFullName,
+            password: getPass,
+            phone_number: getNumber
+        }
+
+        fetch('http://localhost:8080/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(dataSend),
+        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(text);
+                }
+                return res.json();
+            })
+            .then(data => {
+                setState({
+                    alert: {
+                        isOpen: true,
+                        message: "Đăng kí thành công!!!",
+                        duration: 3000,
+                        type: 'success',
+                    }
+                });
+            })
+            .catch(err => {
+                setState({
+                    alert: {
+                        isOpen: true,
+                        message: "Email của bạn đã được sử dụng!!!",
+                        duration: 3000,
+                        type: 'error',
+                    }
+                });
+                return err;
+            })
+    }
+
     return (
         <>
             <Navigation />
+            
             <div className='backgound-login'>
                 <img src={background} alt="background" height="100%" width="100%" ></img>
                 <div className='chil-background-login'>
@@ -54,30 +114,18 @@ export default function Register() {
                                     Tạo tài khoản
                                 </Typography>
                                 <Box component="form" noValidate sx={{ mt: 1 }}>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                autoComplete="given-name"
-                                                name="firstName"
-                                                required
-                                                fullWidth
-                                                id="firstName"
-                                                label="Họ"
-                                                autoFocus
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                required
-                                                fullWidth
-                                                id="lastName"
-                                                label="Tên"
-                                                name="lastName"
-                                                autoComplete="family-name"
-                                            />
-                                        </Grid>
-
-                                    </Grid>
+                                    <TextField
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        id="email"
+                                        label="Họ và Tên"
+                                        autoComplete="ten"
+                                        autoFocus
+                                        onChange={(e) => {
+                                            setFullName(e.target.value)
+                                        }}
+                                    />
 
                                     <TextField
                                         margin="normal"
@@ -88,7 +136,9 @@ export default function Register() {
                                         name="email"
                                         autoComplete="email"
                                         autoFocus
-
+                                        onChange={(e) => {
+                                            setEmail(e.target.value)
+                                        }}
                                     />
 
                                     <Grid container spacing={2}>
@@ -100,15 +150,17 @@ export default function Register() {
                                                 label="Mật khẩu"
                                                 type={showPassword ? "password" : "text"}
                                                 id="password"
-                                                autoComplete="current-password">
-
+                                                autoComplete="current-password"
+                                                onChange={(e) => {
+                                                    setPass(e.target.value)
+                                                }}
+                                            >
                                             </TextField>
                                         </Grid>
-                                        <Grid item xs={12} sm={4} mt={2.6}>
+                                        <Grid item xs={12} sm={4} mt={2.8}>
                                             <IconButton
                                                 aria-label="toggle password visibility"
                                                 onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
                                                 edge="end"
                                             >
                                                 {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -128,16 +180,16 @@ export default function Register() {
                                         type="number"
                                         autoComplete="email"
                                         autoFocus
+                                        onChange={(e) => {
+                                            setNumber(e.target.value)
+                                        }}
                                     />
 
                                     <Button
                                         fullWidth
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2 }}
-
-
-                                    // component={Link} to='/home'
-
+                                        onClick={() => { handleRegister() }}
                                     >
                                         Đăng ký
                                     </Button>
@@ -151,6 +203,24 @@ export default function Register() {
                                 </Box>
                             </Box>
                         </Container>
+                        <Snackbar
+                        open={kq.alert.isOpen}
+                        autoHideDuration={kq.alert.duration}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right'
+                        }}
+                        onClose={() => {
+                            setState({ alert: { ...kq.alert, isOpen: false } })
+                        }}
+                    >
+                        <Alert
+                            severity={kq.alert.type}
+                            sx={{ width: '100%' }}
+                        >
+                            {kq.alert.message}
+                        </Alert>
+                    </Snackbar>
                     </ThemeProvider>
                 </div>
             </div>
