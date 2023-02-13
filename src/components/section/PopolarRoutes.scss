@@ -1,0 +1,53 @@
+.section-routes {
+    height: 360px;
+    //  margin-top: 20px;
+
+    .routes-container {
+        margin: 0 60px;
+        display: flex;
+        flex-direction: column;
+
+        .routes-header {
+            height: 60px;
+        }
+
+        .routes-body {
+
+            .slick-prev {
+
+                left: -18px !important;
+                z-index: 50 !important;
+                height: 48px !important;
+                width: 44px !important;
+            }
+
+            .slick-prev::before {
+                color: rgb(96, 92, 92) !important;
+            }
+
+            .slick-next {
+                right: -15px !important;
+                height: 48px !important;
+                width: 44px !important;
+            }
+
+            .slick-next::before {
+                color: rgb(96, 92, 92) !important;
+            }
+        }
+
+
+
+        .img-customize {
+
+            margin: 10px 10px 10px 5px;
+        }
+
+        .img-customize img {
+            width: 96%;
+            height: 200px;
+        }
+    }
+
+
+}
