@@ -40,30 +40,42 @@ export default function Login() {
     const [getPass, setPass] = useState('');
 
     const handleSubmit = (event) => {
-        if (getEmail === 'test' && getPass === 'test123') {
-            navigate(`/home`)
-        }
-
-
-        // let url = `http://localhost:8080/api/login`;
-        // let dataSend = {
-        //     email: getEmail,
-        //     password: getPass
+        // if (getEmail === 'test' && getPass === 'test123') {
+        //      navigate(`/home`)
         // }
-        // fetch(url, {
-        //     method: "POST",
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(dataSend),
 
-        // })
-        // .then(async (res) => {
-        //     return true;
-        //   })
-        //   .then((data) => {
-        //     console.log(data)
-        //   })
+
+        let url = `http://localhost:8080/api/login`;
+        let dataSend = {
+            email: getEmail,
+            password: getPass
+        }
+        fetch(url, {
+            method: "POST",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify(dataSend),
+
+        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(text);
+                }
+                return res.json();
+            })
+            .then((data) => {
+                if (data.userId !== undefined) {
+                    navigate(`/home`)
+
+                }
+            })
+            .catch((err) => {
+                return err;
+            })
 
     };
 
