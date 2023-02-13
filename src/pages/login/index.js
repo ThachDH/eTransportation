@@ -13,9 +13,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import background from "../../assets/background.jpg"
 import "./index.scss"
-import { Link, useNavigate,NavLink } from 'react-router-dom';
+import { Link, useNavigate, NavLink } from 'react-router-dom';
 import Navigation from '../../components/navigation/Nav';
 import { useState } from 'react';
+import { Nav } from 'react-bootstrap';
 
 
 function Copyright(props) {
@@ -40,29 +41,29 @@ export default function Login() {
 
     const handleSubmit = (event) => {
         if (getEmail === 'test' && getPass === 'test123') {
-             navigate(`/home`)
+            navigate(`/home`)
         }
 
 
-            // let url = `http://localhost:8080/api/login`;
-            // let dataSend = {
-            //     email: getEmail,
-            //     password: getPass
-            // }
-            // fetch(url, {
-            //     method: "POST",
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(dataSend),
+        // let url = `http://localhost:8080/api/login`;
+        // let dataSend = {
+        //     email: getEmail,
+        //     password: getPass
+        // }
+        // fetch(url, {
+        //     method: "POST",
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(dataSend),
 
-            // })
-            // .then(async (res) => {
-            //     return true;
-            //   })
-            //   .then((data) => {
-            //     console.log(data)
-            //   })
+        // })
+        // .then(async (res) => {
+        //     return true;
+        //   })
+        //   .then((data) => {
+        //     console.log(data)
+        //   })
 
     };
 
@@ -87,7 +88,7 @@ export default function Login() {
                                     <LockOutlinedIcon />
                                 </Avatar>
                                 <Typography component="h1" variant="h5">
-                                    Sign in
+                                    Đăng nhập
                                 </Typography>
                                 <Box component="form" noValidate sx={{ mt: 1 }}>
                                     <TextField
@@ -125,22 +126,22 @@ export default function Login() {
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2 }}
 
-                                    onClick={() => handleSubmit()}
+                                        onClick={() => handleSubmit()}
                                     // component={Link} to='/home'
 
                                     >
-                                        Sign In
+                                        Đăng nhập
                                     </Button>
                                     <Grid container>
                                         <Grid item xs>
-                                            <Link href="#" variant="body2">
-                                                Forgot password?
-                                            </Link>
+                                            <Nav.Link href="#">
+                                                Quên mật khẩu?
+                                            </Nav.Link>
                                         </Grid>
                                         <Grid item>
-                                            <Link href="#" variant="body2">
-                                                {"Don't have an account? Sign Up"}
-                                            </Link>
+                                            <Nav.Link href="register">
+                                                Đăng ký tài khoản
+                                            </Nav.Link>
                                         </Grid>
                                     </Grid>
                                 </Box>
