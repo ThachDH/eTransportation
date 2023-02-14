@@ -7,9 +7,18 @@ import logo from "../../assets/header-background.jpg";
 import SearchBar from "../../components/searchRoute/SearchBar";
 import './HomePage.scss';
 import { useContext } from "react";
+import { Button } from "@mui/material";
+import { Link, useNavigate, NavLink } from 'react-router-dom';
+
 const HomePage = () => {
+    const navigate = useNavigate()
+
     return (
         <>
+        <Button
+        onClick={()=>navigate(`/ticketdetails`)
+    }
+        >Thach</Button>
             <Navigation />
             <div className="home-header-img">
                 <div className="home-header-search-bar">

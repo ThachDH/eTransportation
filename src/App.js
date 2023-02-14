@@ -5,9 +5,7 @@ import { ClassNames } from "@emotion/react";
 function App() {
   return (
     <div className="App">
-
       <Router />
-
     </div>
   );
 }
