@@ -28,10 +28,22 @@ import {
     Grid,
     TextField,
 } from "@mui/material";
+import DialogTicketDetails from '../../components/dialog/DialogTicketDetails';
+
 const Ticketdetails = (props) => {
+    const closeDialog = (event) => {
+        setDialog({isOpen :false})
+    }
+
     const { link, company, star, price, carType, carBlank } = props
+    const [dialog, setDialog] = React.useState(
+        {
+            isOpen: false,
+            data: null,
+        },
+    )
     return (
-        <Card sx={{ width: 800, height: 250, display: 'flex', backgroundColor : '#EEE8CD'}}>
+        <Card sx={{ width: 800, height: 250, display: 'flex', backgroundColor: '#EEE8CD' }}>
             <CardMedia
                 component="img"
                 alt="Transportation"
@@ -101,13 +113,20 @@ const Ticketdetails = (props) => {
                 <Stack alignItems="center">
                     <Button
                         type="button"
-                        variant="outlined"
-                        sx={{ width: 200,fontSize : 8 }}
+                        variant="text"
+                        sx={{ width: 200, fontSize: 9 }}
+                        onClick={() => setDialog({
+                            isOpen: true
+                        })}
                     >
                         Thông tin chi tiết vé xe {<DirectionsBusIcon />}
                     </Button>
                 </Stack>
+                <DialogTicketDetails
+                    dialog={dialog}
+                    handleCloseDialog={(data) => closeDialog(data)}
 
+                />
             </CardContent>
         </Card>
     );
