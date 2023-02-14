@@ -5,6 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import GradeIcon from '@mui/icons-material/Grade';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import {
     Box,
     Button,
@@ -27,16 +29,16 @@ import {
     TextField,
 } from "@mui/material";
 const Ticketdetails = (props) => {
-    const { link, company, star, price, carType } = props
+    const { link, company, star, price, carType, carBlank } = props
     return (
-        <Card sx={{ width: 800, height: 250, display: 'flex' }}>
+        <Card sx={{ width: 800, height: 250, display: 'flex', backgroundColor : '#EEE8CD'}}>
             <CardMedia
                 component="img"
                 alt="Transportation"
                 sx={{ backgroundColor: 'red', width: 200 }}
                 src='http://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg'
-/>
-            <CardContent sx={{width : 600}}>
+            />
+            <CardContent sx={{ width: 600 }}>
                 <Stack direction='row' justifyContent="space-between" >
                     <Stack direction='row' spacing={2}>
                         <FormControl fullWidth >
@@ -60,6 +62,52 @@ const Ticketdetails = (props) => {
                         xe 12 chỗ carType
                     </Typography>
                 </Stack>
+                <Grid container spacing={2} sx={{ mt: 1 }} >
+                    <Grid item xs={6}>
+                        <Stack direction='row' spacing={2}>
+                            <Typography align="right" sx={{ fontWeight: 'bold' }}>Thời gian -- Địa điểm</Typography>
+                        </Stack>
+                    </Grid>
+                </Grid>
+                <Grid container  >
+                    <Stack></Stack>
+                    <Grid item xs={6}>
+                        <Stack direction='row' spacing={0} sx={{ ml: 4 }}>
+                            <ArrowDownwardIcon sx={{ fontSize: 35 }} />
+                        </Stack>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography sx={{ color: 'gray' }} align="right" variant='body2' >
+                            xe còn 12 chỗ trống
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={2} >
+                    <Grid item xs={6}>
+                        <Stack direction='row' spacing={2}>
+                            <Typography align="right" sx={{ fontWeight: 'bold' }}>Thời gian -- Địa điểm</Typography>
+                        </Stack>
+                    </Grid>
+                    <Grid item xs={6} >
+                        <Button
+                            type="button"
+                            variant="contained"
+                            sx={{ width: 150, backgroundColor: "#f0d455", ml: 16 }}
+                        >
+                            Tìm chuyến
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Stack alignItems="center">
+                    <Button
+                        type="button"
+                        variant="outlined"
+                        sx={{ width: 200,fontSize : 8 }}
+                    >
+                        Thông tin chi tiết vé xe {<DirectionsBusIcon />}
+                    </Button>
+                </Stack>
+
             </CardContent>
         </Card>
     );
