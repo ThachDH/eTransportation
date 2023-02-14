@@ -27,15 +27,15 @@ import {
     TextField,
 } from "@mui/material";
 const Ticketdetails = (props) => {
-    const { company, star, price, carType } = props
+    const { link, company, star, price, carType } = props
     return (
         <Card sx={{ width: 800, height: 250, display: 'flex' }}>
             <CardMedia
                 component="img"
                 alt="Transportation"
                 sx={{ backgroundColor: 'red', width: 200 }}
-                image={''}
-            />
+                src='http://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg'
+/>
             <CardContent sx={{width : 600}}>
                 <Stack direction='row' justifyContent="space-between" >
                     <Stack direction='row' spacing={2}>
