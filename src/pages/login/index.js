@@ -17,53 +17,74 @@ import { Link, useNavigate, NavLink } from 'react-router-dom';
 import Navigation from '../../components/navigation/Nav';
 import { useState } from 'react';
 import { Nav } from 'react-bootstrap';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 const theme = createTheme();
-
 export default function Login() {
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+    const [kq, setState] = useState({
+        alert: {
+            isOpen: false,
+            message: 'Lỗi không xác định!',
+            duration: 10000,
+            type: 'info'
+        }
+    });
     const navigate = useNavigate()
     const [getEmail, setEmail] = useState('');
     const [getPass, setPass] = useState('');
 
     const handleSubmit = (event) => {
-        if (getEmail === 'test' && getPass === 'test123') {
-            navigate(`/home`)
-        }
-
-
-        // let url = `http://localhost:8080/api/login`;
-        // let dataSend = {
-        //     email: getEmail,
-        //     password: getPass
+        // if (getEmail === 'test' && getPass === 'test123') {
+        //      navigate(`/home`)
         // }
-        // fetch(url, {
-        //     method: "POST",
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(dataSend),
 
-        // })
-        // .then(async (res) => {
-        //     return true;
-        //   })
-        //   .then((data) => {
-        //     console.log(data)
-        //   })
+
+        let url = `http://localhost:8080/api/login`;
+        let dataSend = {
+            email: getEmail,
+            password: getPass
+        }
+        fetch(url, {
+            method: "POST",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify(dataSend),
+
+        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new `Error`(text);
+                }
+                return res.json();
+            })
+            .then((data) => {
+                console.log(data)
+                if (data.userId !== undefined) {
+                    navigate(`/home`)
+
+                }
+            })
+            .catch((err) => {
+                setState({
+                    alert: {
+                        isOpen: true,
+                        message: "Tài khoản đăng nhập bạn không đúng, vui lòng nhập lại !!!",
+                        duration: 3000,
+                        type: 'error',
+                    }
+                });
+                return err;
+            })
 
     };
 
@@ -133,12 +154,12 @@ export default function Login() {
                                         Đăng nhập
                                     </Button>
                                     <Grid container>
-                                        <Grid item xs>
+                                        <Grid item xs sx={{mb: 14, mt:3}}>
                                             <Nav.Link href="#">
                                                 Quên mật khẩu?
                                             </Nav.Link>
                                         </Grid>
-                                        <Grid item>
+                                        <Grid item sx={{mb: 14, mt:3}}>
                                             <Nav.Link href="register">
                                                 Đăng ký tài khoản
                                             </Nav.Link>
@@ -146,9 +167,26 @@ export default function Login() {
                                     </Grid>
                                 </Box>
                             </Box>
-                            <Copyright sx={{ mt: 8, mb: 4 }} />
                         </Container>
                     </ThemeProvider>
+                    <Snackbar
+                        open={kq.alert.isOpen}
+                        autoHideDuration={kq.alert.duration}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right'
+                        }}
+                        onClose={() => {
+                            setState({ alert: { ...kq.alert, isOpen: false } })
+                        }}
+                    >
+                        <Alert
+                            severity={kq.alert.type}
+                            sx={{ width: '100%' }}
+                        >
+                            {kq.alert.message}
+                        </Alert>
+                    </Snackbar>
                 </div>
             </div>
         </>

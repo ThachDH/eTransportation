@@ -62,7 +62,6 @@ export default class SearchBar extends React.Component {
               sx={{ width: 260 }}
               renderInput={(params) => <TextField {...params} label="Nơi xuất phát" />}
             />
-
             <Divider>
               <ChangeCircleIcon />
             </Divider>
@@ -76,7 +75,6 @@ export default class SearchBar extends React.Component {
               sx={{ width: 260 }}
               renderInput={(params) => <TextField {...params} label="Nơi đến" />}
             />
-
             <Divider />
             {/* <IconButton sx={{ p: '10px' }} aria-label="menu">
               <CalendarMonthOutlinedIcon />

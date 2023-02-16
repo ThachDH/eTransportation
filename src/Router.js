@@ -14,7 +14,6 @@ function Router() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/ticketpage" element={<TicketPage />} />
                 <Route path="/ticketdetails" element={<Ticketdetails />} />
-
             </Routes>
         </BrowserRouter>
     );
