@@ -21,8 +21,8 @@ import {
     FormControl,
     Box
 } from "@mui/material";
+import MuiAlert from '@mui/material/Alert';
 
-    import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import FlagIcon from '@mui/icons-material/Flag';
 
@@ -62,8 +62,8 @@ class DialogTicketDetails extends React.Component {
                         </Card>
                     </DialogContent>
                     <Button
-                    onClick={()=> this.closeDialog()}
-                    variant="contained">
+                    onClick={() => this.closeDialog()}
+                        variant="contained">
                         Đóng
                     </Button>
                 </Dialog>
@@ -73,3 +73,4 @@ class DialogTicketDetails extends React.Component {
     }
 }
 export default DialogTicketDetails;
+
