@@ -15,10 +15,10 @@ const HomePage = () => {
 
     return (
         <>
-        <Button
+        {/* <Button
         onClick={()=>navigate(`/ticketdetails`)
     }
-        >Thach</Button>
+        >Thach</Button> */}
             <Navigation />
             <div className="home-header-img">
                 <div className="home-header-search-bar">

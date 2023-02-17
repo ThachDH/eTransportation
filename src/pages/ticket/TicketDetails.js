@@ -106,7 +106,7 @@ const Ticketdetails = (props) => {
                             variant="contained"
                             sx={{ width: 150, backgroundColor: "#f0d455", ml: 16 }}
                         >
-                            Tìm chuyến
+                            Mua
                         </Button>
                     </Grid>
                 </Grid>
