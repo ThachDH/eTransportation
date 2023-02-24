@@ -4,6 +4,8 @@ import Login from "./pages/login/index.js";
 import Register from "./pages/register/Register";
 import TicketPage from "./pages/ticket";
 import Ticketdetails from "./pages/ticket/TicketDetails";
+import { Generals } from "./pages/admin/Admin";
+import Page from "./pages/dashboard";
 function Router() {
     return (
         <BrowserRouter>
@@ -14,6 +16,9 @@ function Router() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/ticketpage" element={<TicketPage />} />
                 <Route path="/ticketdetails" element={<Ticketdetails />} />
+                <Route path="/admin-page" element={<Generals />} />
+                <Route path="/company-page" element={<Page />} />
+
             </Routes>
         </BrowserRouter>
     );
