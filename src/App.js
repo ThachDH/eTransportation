@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Router from "./Router";
-import { registerChartJs } from './pages/dashboard/register-chart-js'
+import { registerChartJs } from "./components/dashboard/register-chart-js";
 
 registerChartJs();
 

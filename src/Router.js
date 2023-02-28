@@ -5,7 +5,7 @@ import Register from "./pages/register/Register";
 import TicketPage from "./pages/ticket";
 import Ticketdetails from "./pages/ticket/TicketDetails";
 import { Generals } from "./pages/admin/Admin";
-import Page from "./pages/dashboard";
+import Page from "./pages/company";
 function Router() {
     return (
         <BrowserRouter>
