@@ -8,6 +8,7 @@ import { Generals } from "./pages/admin/Admin";
 import Page from "./pages/company";
 import AddRoute from "./pages/company/AddRoute";
 import AddTrip from "./pages/company/AddTrip";
+import AddTicket from "./pages/company/AddTicket";
 function Router() {
     return (
         <BrowserRouter>
@@ -24,6 +25,7 @@ function Router() {
                 <Route path="/company-page" element={<Page />} />
                 <Route path="/company-route" element={<AddRoute />} />
                 <Route path="/company-trip" element={<AddTrip />} />
+                <Route path="/company-ticket" element={<AddTicket />} />
 
 
             </Routes>
