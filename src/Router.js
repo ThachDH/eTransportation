@@ -6,6 +6,8 @@ import TicketPage from "./pages/ticket";
 import Ticketdetails from "./pages/ticket/TicketDetails";
 import { Generals } from "./pages/admin/Admin";
 import Page from "./pages/company";
+import AddRoute from "./pages/company/AddRoute";
+import AddTrip from "./pages/company/AddTrip";
 function Router() {
     return (
         <BrowserRouter>
@@ -17,7 +19,12 @@ function Router() {
                 <Route path="/ticketpage" element={<TicketPage />} />
                 <Route path="/ticketdetails" element={<Ticketdetails />} />
                 <Route path="/admin-page" element={<Generals />} />
+
+                
                 <Route path="/company-page" element={<Page />} />
+                <Route path="/company-route" element={<AddRoute />} />
+                <Route path="/company-trip" element={<AddTrip />} />
+
 
             </Routes>
         </BrowserRouter>
