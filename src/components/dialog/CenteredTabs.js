@@ -8,6 +8,7 @@ import {
     MDBCarousel,
     MDBCarouselItem,
 } from 'mdb-react-ui-kit';
+import SliderImg from './SliderImg'
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -58,39 +59,6 @@ export default function BasicTabs() {
                     <Tab label="Điểm đón, trả" {...a11yProps(2)} />
                 </Tabs>
             </Box>
-            <TabPanel value={value} index={0} >
-                <MDBCarousel showControls fade >
-                    <MDBCarouselItem
-                        className='w-100 d-blok'
-                        itemId={1}
-                        src='//static.vexere.com/production/images/1559637550202.jpeg'
-                        alt='...'
-                        height='300px'
-                    />
-                    <MDBCarouselItem
-                        className='w-100 d-block'
-                        itemId={2}
-                        src='////static.vexere.com/c/i/12766/xe-hai-au-VeXeRe-dWNz2xW-1000x600.jpeg'
-                        alt='...'
-                        height='300px'
-
-                    />
-                    <MDBCarouselItem
-                        className='w-100 d-block'
-                        itemId={3}
-                        src='//static.vexere.com/production/images/1660614512334.jpeg'
-                        alt='...'
-                        height='300px'
-
-                    />
-                </MDBCarousel>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                text
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                text
-            </TabPanel>
         </Box>
     );
 }
