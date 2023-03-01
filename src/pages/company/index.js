@@ -1,16 +1,16 @@
 import { Box, Container, Grid } from '@mui/material';
-import {Budget}  from '../../components/dashboard/budget'
-import {LatestOrders} from '../../components/dashboard/latest-orders'
-import {Sales} from '../../components/dashboard/sales'
+import { Budget } from '../../components/dashboard/budget'
+import { LatestOrders } from '../../components/dashboard/latest-orders'
+import { Sales } from '../../components/dashboard/sales'
 import { TasksProgress } from '../../components/dashboard/tasks-progress'
 import { TotalCustomers } from '../../components/dashboard/total-customers'
 import { TotalProfit } from '../../components/dashboard/total-profit'
-import {DashboardLayout} from '../../components/dashboard/dashboard-layout'
+import { DashboardLayout } from '../../components/dashboard/dashboard-layout'
 import Footer from '../../components/footer/Footer';
 
 const Page = () => (
   <>
-  <h2 style={{ textAlign: 'center', color: 'red' }}>Chào mừng bạn đến với công ty 3 thành viên</h2>
+    <h2 style={{ textAlign: 'center', color: 'red' }}>Chào mừng bạn đến với công ty 3 thành viên</h2>
     <Box
       component="main"
       sx={{
@@ -88,7 +88,7 @@ const Page = () => (
         </Grid>
       </Container>
     </Box>
-    <Footer/>
+    <Footer />
   </>
 );
 

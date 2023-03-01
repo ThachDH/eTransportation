@@ -4,7 +4,10 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function Navigation() {
-
+    const getEmail = localStorage.getItem('email');
+    const handleLogout = () => {
+        localStorage.clear();
+    }
     return (
         <>
             <Navbar collapseOnSelect expand="lg" variant="white">
@@ -28,9 +31,11 @@ function Navigation() {
                             </NavDropdown>
                         </Nav>
                         <Nav>
-                            <Nav.Link href="#deets">VN</Nav.Link>
-                            <Nav.Link eventKey={2} href="login">
-                                Đăng nhập                            </Nav.Link>
+                            <Nav.Link href="">{getEmail}</Nav.Link>
+                            {getEmail == null ?
+                                <Nav.Link eventKey={2} href="login"> Đăng nhập </Nav.Link> :
+                                <Nav.Link href="/home" onClick={handleLogout}> Đăng xuất </Nav.Link>}
+
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
