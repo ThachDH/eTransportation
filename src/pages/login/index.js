@@ -21,7 +21,6 @@ import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
 
-
 const theme = createTheme();
 export default function Login() {
     const Alert = React.forwardRef(function Alert(props, ref) {
@@ -70,8 +69,15 @@ export default function Login() {
             .then((data) => {
                 console.log(data)
                 if (data.userId !== undefined) {
-                    navigate(`/home`)
-
+                    if (data.role === 'USER') {
+                        navigate(`/home`)
+                    }
+                    else if (data.role === 'ADMIN') {
+                        navigate(`/admin-page`)
+                    }
+                    localStorage.setItem('email', getEmail);
+                    localStorage.setItem('password', getPass);
+                    localStorage.setItem('role', data.role);
                 }
             })
             .catch((err) => {
@@ -154,12 +160,12 @@ export default function Login() {
                                         Đăng nhập
                                     </Button>
                                     <Grid container>
-                                        <Grid item xs sx={{mb: 14, mt:3}}>
+                                        <Grid item xs sx={{ mb: 14, mt: 3 }}>
                                             <Nav.Link href="#">
                                                 Quên mật khẩu?
                                             </Nav.Link>
                                         </Grid>
-                                        <Grid item sx={{mb: 14, mt:3}}>
+                                        <Grid item sx={{ mb: 14, mt: 3 }}>
                                             <Nav.Link href="register">
                                                 Đăng ký tài khoản
                                             </Nav.Link>

@@ -9,16 +9,18 @@ import './HomePage.scss';
 import { useContext } from "react";
 import { Button } from "@mui/material";
 import { Link, useNavigate, NavLink } from 'react-router-dom';
+import Login from "../login";
 
 const HomePage = () => {
     const navigate = useNavigate()
 
     return (
         <>
-        {/* <Button
+            {/* <Button
         onClick={()=>navigate(`/ticketdetails`)
     }
         >Thach</Button> */}
+
             <Navigation />
             <div className="home-header-img">
                 <div className="home-header-search-bar">

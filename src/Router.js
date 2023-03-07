@@ -20,8 +20,7 @@ function Router() {
                 <Route path="/ticketpage" element={<TicketPage />} />
                 <Route path="/ticketdetails" element={<Ticketdetails />} />
                 <Route path="/admin-page" element={<Generals />} />
-
-                
+                {/* <Route path="/admin-page" render={() => { return <Generals /> }}></Route> */}
                 <Route path="/company-page" element={<Page />} />
                 <Route path="/company-route" element={<AddRoute />} />
                 <Route path="/company-trip" element={<AddTrip />} />
