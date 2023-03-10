@@ -93,6 +93,7 @@ class AddCompany extends React.Component {
             type: 'success' // info / warning / error / success
           }
         })
+        this.props.handleCreate(dataSend);
       })
       .catch((err) => {
         this.setState({
@@ -106,8 +107,53 @@ class AddCompany extends React.Component {
       })
   }
   handleUpdate() {
-    
+    let url = `http://localhost:8080/api/admin/updateCompany`;
+    let dataSend = {
+      email: this.state.data.email,
+      name: this.state.data.name,
+      hotline: this.state.data.hotline,
+      address: this.state.data.address,
+      status: this.state.data.status === 'Hoạt động' ? 1 : 0,
+    }
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then(data => {
+        this.setState({
+          alert: {
+            isOpen: true,
+            message: 'Chỉnh sửa thành công',
+            duration: 5000,
+            type: 'success' // info / warning / error / success
+          }
+        })
+      })
+      .catch((err) => {
+        this.setState({
+          alert: {
+            isOpen: true,
+            message: 'Chỉnh sửa thất bại',
+            duration: 5000,
+            type: 'error' // info / warning / error / success
+          }
+        })
+      })
   }
+
   render() {
     return (
       <Dialog open={this.props.dialog.isOpen} scroll="paper" >
@@ -206,6 +252,15 @@ class AddCompany extends React.Component {
                         renderInput={(params) => <TextField {...params} label="Trạng thái" />}
                       /> : <Autocomplete
                         options={['Hoạt động', 'Ngừng hoạt động']}
+                        onChange={(event, data) => {
+                          console.log(data)
+                          this.setState({
+                            data: {
+                              ...this.state.data,
+                              status: data,
+                            },
+                          })
+                        }}
                         renderInput={(params) => <TextField {...params} label="Trạng thái" />}
                       />}
 

@@ -29,6 +29,10 @@ class AddTrip extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      departDid: [],
+      destinationDid: [],
+
+
       dataTable: [],
       data: {
         STT: "",
@@ -66,16 +70,49 @@ class AddTrip extends React.Component {
 
       },
       {
-        field: "route_Name",
-        headerName: 'Mã công ty',
+        field: "depart",
+        headerName: 'Điểm đi',
         flex: 1,
         editable: true,
-        headerAlign: "center"
-
+        headerAlign: "center",
+        type: 'singleSelect',
+        valueOptions: () => {
+          const options = this.state.departDid;
+          return options;
+        }
+      },
+      {
+        field: "destination",
+        headerName: 'Điểm đến',
+        flex: 1,
+        editable: true,
+        headerAlign: "center",
+        type: 'singleSelect',
+        valueOptions: () => {
+          const options = this.state.destinationDid;
+          
+          return options;
+        }
+      },
+      {
+        field: "distance",
+        headerName: 'Khoảng cách',
+        flex: 1,
+        editable: true,
+        headerAlign: "center",
+        type: 'number',
+      },
+      {
+        field: "price",
+        headerName: 'Giá',
+        flex: 1,
+        editable: true,
+        headerAlign: "center",
+        type: 'number',
       },
       {
         field: "begin_time",
-        headerName: 'Thời gian xuất phát',
+        headerName: 'Thời gian đi',
         flex: 1,
         editable: true,
         headerAlign: "center",
@@ -88,6 +125,22 @@ class AddTrip extends React.Component {
         editable: true,
         headerAlign: "center",
         type: 'dateTime',
+      },
+      {
+        field: "type",
+        headerName: 'Loại xe',
+        flex: 1,
+        editable: true,
+        headerAlign: "center",
+        type: 'singleSelect',
+        valueOptions: [{ value: '7', label: '7' }, { value: '16', label: '16' }, { value: '30', label: '30' }, { value: '45', label: '45' }],
+      },
+      {
+        field: "image_path",
+        headerName: 'Đường dẫn ảnh',
+        flex: 1,
+        editable: true,
+        headerAlign: "center",
       },
     ]
     this.createRows = (data) => data.map((row, index) => ({
@@ -121,18 +174,164 @@ class AddTrip extends React.Component {
     })
   }
   componentDidMount() {
-
+    this.handleViewData();
+    this.apiRoute();
   }
 
   handleViewData() {
-    //API view Route
-  }
-  handleDelete() {
-    //API Delete Route
+    let url = `http://localhost:8080/api/company/getTripsByComId`;
+    let dataSend = {
+      company_id: Number(localStorage.getItem('id'))
+    }
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log(this.createRows(data.result))
+        if (data.result.length > 0) {
+          let temp = this.createRows(data.result);
+          temp.map(e => {
+            e.begin_time = moment(e.begin_time).format("DD-MM-YYYY HH:mm:ss")
+            e.end_time = moment(e.end_time).format("DD-MM-YYYY HH:mm:ss")
+          })
+          this.setState({
+            dataTable: temp,
+            alert: {
+              isOpen: true,
+              type: "success",
+              duration: 3000,
+              message: "Nạp dữ liệu thành công!"
+            },
+          })
+        }
+        else {
+          this.setState({
+            dataTable: [],
+            alert: {
+              type: 'warning',
+              message: 'Không tìm thấy dữ liệu!',
+              duration: 3000,
+              isOpen: true
+            }
+          });
+        }
+      })
   }
 
+
   handleSave() {
-    //API luu
+    let url = `http://localhost:8080/api/company/createUpdateTripByCompany`;
+    
+    let checkColumn = {
+      depart: "Điểm đi",
+      destination: "Điểm đến",
+      distance : "Khoảng cách",
+      price : "Giá xe",
+      begin_time : "Thời gian đi" ,
+      end_time : "Thời gian đến",
+      type : "Loại xe",
+      image_path : "Ảnh xe"
+
+
+    }
+    let arr = [];
+    let dataSend = this.state.dataTable.filter(p => p.status === 'insert' || p.status === 'update').map(data => {
+      if (arr.length === 0) {
+        Object.keys(checkColumn).map((key) => {
+          return !data[key] ? arr.push(checkColumn[key]) : [];
+        });
+      }
+      return data;
+    });
+    if (arr.length > 0) {
+      this.setState({
+        alert: {
+          isOpen: true,
+          duration: 3000,
+          message: arr.join(', ') + " không được để trống",
+          type: "error"
+        }
+      })
+      return;
+    }
+    dataSend.map(e=> {
+       return e['company_id'] = Number(localStorage.getItem('id'))
+    })
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then(data =>{
+        if(data.array_object[0].data) {
+          this.setState({
+            alert: {
+              isOpen: true,
+              type: "success",
+              duration: 3000,
+              message: "Lưu dữ liệu thành công!"
+            },
+          })
+        }
+      })
+  }
+
+  apiRoute() {
+    //API view Route
+    let url = `http://localhost:8080/api/company/getRoutesByComId`;
+    let dataSend = {
+      company_id : Number(localStorage.getItem('id'))
+    }
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (data.result.length > 0) {
+          let tempdepart = data.result.map(e => e.depart)
+          let tempDetination = data.result.map(e => e.destination)
+          this.setState({
+            departDid : tempdepart,
+            destinationDid : tempDetination
+          })
+        }
+      })
   }
 
   filterGridView() {
@@ -199,24 +398,13 @@ class AddTrip extends React.Component {
                     </Button>
 
                     <Divider orientation="vertical" />
-                    <Button
-                      style={{ marginLeft: "20px" }}
-                      type="button"
-                      variant="outlined"
-                      onClick={() => this.handleDelete()}
-                      startIcon={<DeleteIcon />}
-                      color="error"
-                    >
-                      Xóa dòng
-                    </Button>
                   </Stack>
                 </Stack>
                 <Divider />
                 <Grid item mt={1} md={12}>
-                <DataGrid
+                  <DataGrid
                     className="m-table"
                     rows={(this.state.dataTable)
-                      .filter(data => data.route_name.toUpperCase().includes(this.state.tableFilter.route_name.toUpperCase()))
                     }
                     rowHeight={35}
                     columns={this.columns}

@@ -35,7 +35,6 @@ import '../../styles/custom.scss'
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import AddCompany from "../../components/dialog/AddCompany";
-import EditCompany from "../../components/dialog/EditCompany";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -125,6 +124,9 @@ class UserManage extends React.Component {
       ...row
     }),
     );
+  }
+  componentDidMount() {
+    this.loadItem()
   }
   loadItem() {
     let url = `http://localhost:8080/api/admin/getAllUser`;
@@ -245,6 +247,24 @@ class UserManage extends React.Component {
             </div>
           </CardContent>
         </Card>
+        <Snackbar
+          open={this.state.alert.isOpen}
+          autoHideDuration={this.state.alert.duration}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right'
+          }}
+          onClose={() => {
+            this.setState({ alert: { ...this.state.alert, isOpen: false } })
+          }}
+        >
+          <Alert
+            severity={this.state.alert.type}
+            sx={{ width: '100%' }}
+          >
+            {this.state.alert.message}
+          </Alert>
+        </Snackbar>
       </Box>
     )
   }

@@ -23,179 +23,192 @@ import Snackbar from '@mui/material/Snackbar';
 
 const theme = createTheme();
 export default function Login() {
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
-    const [kq, setState] = useState({
-        alert: {
-            isOpen: false,
-            message: 'Lỗi không xác định!',
-            duration: 10000,
-            type: 'info'
-        }
-    });
-    const navigate = useNavigate()
-    const [getEmail, setEmail] = useState('');
-    const [getPass, setPass] = useState('');
-
-    const handleSubmit = (event) => {
-        // if (getEmail === 'test' && getPass === 'test123') {
-        //      navigate(`/home`)
-        // }
+	const Alert = React.forwardRef(function Alert(props, ref) {
+		return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+	});
+	const [kq, setState] = useState({
+		alert: {
+			isOpen: false,
+			message: 'Lỗi không xác định!',
+			duration: 10000,
+			type: 'info'
+		}
+	});
+	const navigate = useNavigate()
+	const [getEmail, setEmail] = useState('');
+	const [getPass, setPass] = useState('');
+	const [getID, setID] = useState('');
 
 
-        let url = `http://localhost:8080/api/login`;
-        let dataSend = {
-            email: getEmail,
-            password: getPass
-        }
-        fetch(url, {
-            method: "POST",
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "*",
-            },
-            body: JSON.stringify(dataSend),
+	const handleSubmit = (event) => {
 
-        })
-            .then(async (res) => {
-                if (!res.ok) {
-                    const text = await res.text();
-                    throw new `Error`(text);
-                }
-                return res.json();
-            })
-            .then((data) => {
-                console.log(data)
-                if (data.userId !== undefined) {
-                    if (data.role === 'USER') {
-                        navigate(`/home`)
-                    }
-                    else if (data.role === 'ADMIN') {
-                        navigate(`/admin-page`)
-                    }
-                    localStorage.setItem('email', getEmail);
-                    localStorage.setItem('password', getPass);
-                    localStorage.setItem('role', data.role);
-                }
-            })
-            .catch((err) => {
-                setState({
-                    alert: {
-                        isOpen: true,
-                        message: "Tài khoản đăng nhập bạn không đúng, vui lòng nhập lại !!!",
-                        duration: 3000,
-                        type: 'error',
-                    }
-                });
-                return err;
-            })
+		let url = `http://localhost:8080/api/login`;
+		let dataSend = {
+			email: getEmail,
+			password: getPass
+		}
+		fetch(url, {
+			method: "POST",
+			mode: 'cors',
+			headers: {
+				'Content-Type': 'application/json',
+				"Access-Control-Allow-Origin": "*",
+			},
+			body: JSON.stringify(dataSend),
 
-    };
+		})
+			.then(async (res) => {
+				if (!res.ok) {
+					const text = await res.text();
+					throw new `Error`(text);
+				}
+				return res.json();
+			})
+			.then((data) => {
+				console.log(data)
+				if (data.status === 0) {
+					setState({
+						alert: {
+							isOpen: true,
+							message: "Tài khoản của bạn đã bị khóa !!!",
+							duration: 3000,
+							type: 'error',
+						}
+					});
+				}
+				else {
+					if (data.userId !== undefined || data.companyId !== undefined) {
+						if (data.role === 'USER') {
+							navigate(`/home`)
+						}
+						else if (data.role === 'ADMIN') {
+							navigate(`/admin-page`)
+						} else if (data.role === 'COMPANY') {
+							navigate(`/company-route`)
+						}
+						localStorage.setItem('id', data.userId ? data.userId : data.companyId);
+						localStorage.setItem('email', getEmail);
+						localStorage.setItem('password', getPass);
+						localStorage.setItem('role', data.role);
+					}
+				}
+			})
+			.catch((err) => {
+				setState({
+					alert: {
+						isOpen: true,
+						message: "Tài khoản đăng nhập bạn không đúng, vui lòng nhập lại !!!",
+						duration: 3000,
+						type: 'error',
+					}
+				});
+				return err;
+			})
 
-    return (
-        <>
-            <Navigation />
-            <div className='backgound-login'>
-                <img src={background} alt="background" height="100%" width="100%" ></img>
-                <div className='chil-background-login'>
-                    <ThemeProvider theme={theme}>
-                        <Container component="main" maxWidth="xs">
-                            <CssBaseline />
-                            <Box
-                                sx={{
-                                    marginTop: 8,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                                    <LockOutlinedIcon />
-                                </Avatar>
-                                <Typography component="h1" variant="h5">
-                                    Đăng nhập
-                                </Typography>
-                                <Box component="form" noValidate sx={{ mt: 1 }}>
-                                    <TextField
-                                        margin="normal"
-                                        required
-                                        fullWidth
-                                        id="email"
-                                        label="Email Address"
-                                        name="email"
-                                        autoComplete="email"
-                                        autoFocus
-                                        onChange={(e) => {
-                                            setEmail(e.target.value);
-                                        }}
-                                    />
-                                    <TextField
-                                        margin="normal"
-                                        required
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
-                                        type="password"
-                                        id="password"
-                                        autoComplete="current-password"
-                                        onChange={(e) => {
-                                            setPass(e.target.value)
-                                        }}
-                                    />
-                                    <FormControlLabel
-                                        control={<Checkbox value="remember" color="primary" />}
-                                        label="Remember me"
-                                    />
-                                    <Button
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{ mt: 3, mb: 2 }}
+	};
 
-                                        onClick={() => handleSubmit()}
-                                    // component={Link} to='/home'
+	return (
+		<>
+			<Navigation />
+			<div className='backgound-login'>
+				<img src={background} alt="background" height="100%" width="100%" ></img>
+				<div className='chil-background-login'>
+					<ThemeProvider theme={theme}>
+						<Container component="main" maxWidth="xs">
+							<CssBaseline />
+							<Box
+								sx={{
+									marginTop: 8,
+									display: 'flex',
+									flexDirection: 'column',
+									alignItems: 'center',
+								}}
+							>
+								<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+									<LockOutlinedIcon />
+								</Avatar>
+								<Typography component="h1" variant="h5">
+									Đăng nhập
+								</Typography>
+								<Box component="form" noValidate sx={{ mt: 1 }}>
+									<TextField
+										margin="normal"
+										required
+										fullWidth
+										id="email"
+										label="Email Address"
+										name="email"
+										autoComplete="email"
+										autoFocus
+										onChange={(e) => {
+											setEmail(e.target.value);
+										}}
+									/>
+									<TextField
+										margin="normal"
+										required
+										fullWidth
+										name="password"
+										label="Password"
+										type="password"
+										id="password"
+										autoComplete="current-password"
+										onChange={(e) => {
+											setPass(e.target.value)
+										}}
+									/>
+									<FormControlLabel
+										control={<Checkbox value="remember" color="primary" />}
+										label="Remember me"
+									/>
+									<Button
+										fullWidth
+										variant="contained"
+										sx={{ mt: 3, mb: 2 }}
 
-                                    >
-                                        Đăng nhập
-                                    </Button>
-                                    <Grid container>
-                                        <Grid item xs sx={{ mb: 14, mt: 3 }}>
-                                            <Nav.Link href="#">
-                                                Quên mật khẩu?
-                                            </Nav.Link>
-                                        </Grid>
-                                        <Grid item sx={{ mb: 14, mt: 3 }}>
-                                            <Nav.Link href="register">
-                                                Đăng ký tài khoản
-                                            </Nav.Link>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                            </Box>
-                        </Container>
-                    </ThemeProvider>
-                    <Snackbar
-                        open={kq.alert.isOpen}
-                        autoHideDuration={kq.alert.duration}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right'
-                        }}
-                        onClose={() => {
-                            setState({ alert: { ...kq.alert, isOpen: false } })
-                        }}
-                    >
-                        <Alert
-                            severity={kq.alert.type}
-                            sx={{ width: '100%' }}
-                        >
-                            {kq.alert.message}
-                        </Alert>
-                    </Snackbar>
-                </div>
-            </div>
-        </>
+										onClick={() => handleSubmit()}
+									// component={Link} to='/home'
 
-    );
+									>
+										Đăng nhập
+									</Button>
+									<Grid container>
+										<Grid item xs sx={{ mb: 14, mt: 3 }}>
+											<Nav.Link href="#">
+												Quên mật khẩu?
+											</Nav.Link>
+										</Grid>
+										<Grid item sx={{ mb: 14, mt: 3 }}>
+											<Nav.Link href="register">
+												Đăng ký tài khoản
+											</Nav.Link>
+										</Grid>
+									</Grid>
+								</Box>
+							</Box>
+						</Container>
+					</ThemeProvider>
+					<Snackbar
+						open={kq.alert.isOpen}
+						autoHideDuration={kq.alert.duration}
+						anchorOrigin={{
+							vertical: 'top',
+							horizontal: 'right'
+						}}
+						onClose={() => {
+							setState({ alert: { ...kq.alert, isOpen: false } })
+						}}
+					>
+						<Alert
+							severity={kq.alert.type}
+							sx={{ width: '100%' }}
+						>
+							{kq.alert.message}
+						</Alert>
+					</Snackbar>
+				</div>
+			</div>
+		</>
+
+	);
 }

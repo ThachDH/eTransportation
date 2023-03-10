@@ -34,7 +34,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import AddCompany from "../../components/dialog/AddCompany";
-import EditCompany from "../../components/dialog/EditCompany";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -109,6 +108,7 @@ class ComanyManage extends React.Component {
     });
   }
   closeDialog(dataSend) {
+    console.log(dataSend)
     this.setState({
       dialog: {
         isOpen: false,
@@ -118,9 +118,24 @@ class ComanyManage extends React.Component {
     });
   }
 
-  // componentDidMount() {
-  //   this.loadItem()
-  // }
+  componentDidMount() {
+    this.loadItem()
+  }
+
+  handleCreateSuccess(data) {
+    let tempData = this.state.dataTable;
+    let tempObj = {};
+
+    Object.keys(data).map(key => {
+      return tempObj[key] = data[key];
+    });
+    tempObj.status = 1
+
+    tempData.push(tempObj);
+    this.setState({
+      dataTable: tempData
+    });
+  }
  
   loadItem() {
     let url = `http://localhost:8080/api/admin/getAllCompany`;
@@ -347,6 +362,7 @@ class ComanyManage extends React.Component {
         <AddCompany
           dialog={this.state.dialog}
           handleCloseDialog={(dataSend) => this.closeDialog(dataSend)}
+          handleCreate={(data) => this.handleCreateSuccess(data)}
         />
         <Snackbar
           open={this.state.alert.isOpen}

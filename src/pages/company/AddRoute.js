@@ -66,20 +66,11 @@ class AddRoute extends React.Component {
 
       },
       {
-        field: "company_id",
-        headerName: 'Mã công ty',
-        flex: 1,
-        editable: true,
-        headerAlign: "center"
-
-      },
-      {
         field: "depart",
         headerName: 'Điểm đi',
         flex: 1,
         editable: true,
-        headerAlign: "center"
-
+        headerAlign: "center",
       },
       {
         field: "destination",
@@ -121,18 +112,119 @@ class AddRoute extends React.Component {
     })
   }
   componentDidMount() {
-
+    this.handleViewData()
   }
 
   handleViewData() {
     //API view Route
+    let url = `http://localhost:8080/api/company/getRoutesByComId`;
+    let dataSend = {
+      company_id : Number(localStorage.getItem('id'))
+    }
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (data.result.length > 0) {
+          let temp = this.createRows(data.result);
+          this.setState({
+            dataTable: temp,
+            alert: {
+              isOpen: true,
+              type: "success",
+              duration: 3000,
+              message: "Nạp dữ liệu thành công!"
+            },
+          })
+        }
+        else {
+          this.setState({
+            dataTable: [],
+            alert: {
+              type: 'warning',
+              message: 'Không tìm thấy dữ liệu!',
+              duration: 3000,
+              isOpen: true
+            }
+          });
+        }
+      })
   }
   handleDelete() {
-    //API Delete Route
+    
   }
 
   handleSave() {
-    //API luu
+    let url = `http://localhost:8080/api/company/createUpdateRouteByComId`;
+    
+    let checkColumn = {
+      depart: "Điểm đi",
+      destination: "Điểm đến",
+    }
+    let arr = [];
+    let dataSend = this.state.dataTable.filter(p => p.status === 'insert' || p.status === 'update').map(data => {
+      if (arr.length === 0) {
+        Object.keys(checkColumn).map((key) => {
+          return !data[key] ? arr.push(checkColumn[key]) : [];
+        });
+      }
+      return data;
+    });
+    if (arr.length > 0) {
+      this.setState({
+        alert: {
+          isOpen: true,
+          duration: 3000,
+          message: arr.join(', ') + " không được để trống",
+          type: "error"
+        }
+      })
+      return;
+    }
+    dataSend.map(e=> {
+       return e['company_id'] = Number(localStorage.getItem('id'))
+    })
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then(data =>{
+        if(data.array_object[0].data) {
+          this.setState({
+            alert: {
+              isOpen: true,
+              type: "success",
+              duration: 3000,
+              message: "Lưu dữ liệu thành công!"
+            },
+          })
+        }
+      })
   }
 
   filterGridView() {
