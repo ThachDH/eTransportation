@@ -60,12 +60,12 @@ export default function TicketDetails2() {
                 </Grid>
                 <Grid xs={7.5}>
                   <Grid container >
-                    <Grid xs={7} className='card-detail-left'>
+                    <Grid xs={6} className='card-detail-left'>
                       <Typography gutterBottom variant="h4" component="div">
                         {item.company_name}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {`Xe loại ${item.type}`}
+                        {`Xe ${item.type} chỗ`}
                       </Typography>
                       <div className='card-location'>
                         <div className='icon-tren'>
@@ -79,7 +79,7 @@ export default function TicketDetails2() {
                         </div>
                       </div>
                     </Grid>
-                    <Grid xs={2.5} sx={{ paddingTop: '197px' }}>
+                    <Grid xs={3} sx={{ paddingTop: '185px' }}>
                       {/* <a href=''>Thông tin chi tiết</a> */}
                       <Button
 
@@ -92,7 +92,7 @@ export default function TicketDetails2() {
                       </Button>
 
                     </Grid>
-                    <Grid xs={2.5} className='card-detail-right'>
+                    <Grid xs={3} className='card-detail-right'>
                       <h4 className='price'>{`${item.price}VNĐ`}</h4>
                       <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
                       <Button variant="contained">Đặt vé</Button>

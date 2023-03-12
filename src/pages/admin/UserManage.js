@@ -251,8 +251,8 @@ class UserManage extends React.Component {
           open={this.state.alert.isOpen}
           autoHideDuration={this.state.alert.duration}
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
+            vertical: 'bottom',
+            horizontal: 'left'
           }}
           onClose={() => {
             this.setState({ alert: { ...this.state.alert, isOpen: false } })
