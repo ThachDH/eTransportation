@@ -31,9 +31,57 @@ import Picktime from './Picktime';
 export default class SearchBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {}
-  }
+    this.state = {
+      departDid: [],
+      destinationDid: [],
+      departS: '',
+      destinationS: '',
+      depart_dateS : '',
+    }
 
+  }
+  componentDidMount() {
+    this.apiRoute()
+  }
+  apiRoute() {
+    //API view Route
+    let url = `http://localhost:8080/api/company/getRoutesByComId`;
+    let dataSend = {
+      company_id: Number(localStorage.getItem('id'))
+    }
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log(data)
+        if (data.result.length > 0) {
+          let tempdepart = data.result.map(e => e.depart)
+          let tempDetination = data.result.map(e => e.destination)
+          this.setState({
+            departDid: tempdepart,
+            destinationDid: tempDetination
+          })
+        }
+      })
+  }
+  handleSearch() {
+    let url = `http://localhost:8080/api/getTrips`;
+    let dataSend = {
+    }
+  }
   render() {
     return (
       <Paper
@@ -58,8 +106,13 @@ export default class SearchBar extends React.Component {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={["BRVT", "Long An", "TP.HCM", "Cần Thơ"]}
+              options={this.state.departDid}
               sx={{ width: 260 }}
+              onClick={(e) => {
+                this.setState({
+                  departS: e.target.value
+                })
+              }}
               renderInput={(params) => <TextField {...params} label="Nơi xuất phát" />}
             />
             <Divider>
@@ -71,8 +124,13 @@ export default class SearchBar extends React.Component {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={["Hà Nội", "Yên Bái", "Hưng Yên", "Vĩnh Phúc", "Gia Lai", "Thái Bình"]}
+              options={this.state.destinationDid}
               sx={{ width: 260 }}
+              onClick={(e) => {
+                this.setState({
+                  destinationS: e.target.value
+                })
+              }}
               renderInput={(params) => <TextField {...params} label="Nơi đến" />}
             />
             <Divider />
@@ -91,6 +149,7 @@ export default class SearchBar extends React.Component {
             type="button"
             variant="contained"
             sx={{ width: 150, backgroundColor: "#f0d455" }}
+            onClick={(e) => this.handleSearch()}
           >
             Tìm chuyến
           </Button>
