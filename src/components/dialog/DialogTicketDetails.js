@@ -90,20 +90,21 @@ class DialogTicketDetails extends React.Component {
                 <Box sx={{ width: '100%' }}>
                   <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs
-                value={this.state.selectedTab}
-                onChange={this.tabSelectHandler.bind(this)}
-                indicatorColor="secondary"
-                textColor="inherit"
-                // variant="fullWidth"
-                aria-label="full width tabs example"
-              >
-                      <Tab label="Hình ảnh"  />
-                      <Tab label="Tiện ích"  />
-                      <Tab label="Điểm đón, trả"  />
+                      value={this.state.selectedTab}
+                      onChange={this.tabSelectHandler.bind(this)}
+                      indicatorColor="secondary"
+                      textColor="inherit"
+                      // variant="fullWidth"
+                      aria-label="full width tabs example"
+                    >
+                      <Tab label="Hình ảnh" />
+                      <Tab label="Tiện ích" />
+                      <Tab label="Điểm đón, trả" />
                     </Tabs>
                   </Box>
                   <TabPanel value={this.state.selectedTab} index={0} >
-                    x
+
+
                   </TabPanel>
                   <TabPanel value={this.state.selectedTab} index={1}>
                     text
@@ -115,11 +116,7 @@ class DialogTicketDetails extends React.Component {
               </CardContent>
             </Card>
           </DialogContent>
-          <Button
-            onClick={() => this.closeDialog()}
-            variant="contained">
-            Đóng
-          </Button>
+
         </Dialog>
       </>
 

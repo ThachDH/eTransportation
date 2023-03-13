@@ -80,11 +80,12 @@ export default function Login() {
 					setState({
 						alert: {
 							isOpen: true,
-							message: "Thông tin đăng nhập sai, vui lòng kiểm tra lại !!!",
+							message: data.message,
 							duration: 1500,
 							type: 'error',
 						}
 					});
+					return
 				}
 				else {
 					if (data.userId !== undefined || data.companyId !== undefined) {
