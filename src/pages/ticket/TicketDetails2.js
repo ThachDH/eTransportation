@@ -1,18 +1,14 @@
-import { CardActionArea, CardContent, CardMedia, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Box, Tabs, Tab } from '@mui/material';
-
+import { CardActionArea, CardContent, CardMedia, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Box, Tabs, Tab, Stepper, Step, StepLabel, Checkbox, FormControlLabel } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useEffect } from 'react'
 import PlaceIcon from '@mui/icons-material/Place';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import './TicketDetail.scss';
-import { LocationSearching, RadioButtonChecked, South } from '@mui/icons-material';
-import DialogTicketDetails from '../../components/dialog/DialogTicketDetails';
-import { height, width } from '@mui/system';
-import { Nav } from 'react-bootstrap';
+import { CheckBox, LocationSearching, RadioButtonChecked, South } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import SlideTicketDetail from '../../components/dialog/SlideTicketDetail'
 
-
+let arr = [1, 2, 3, 4, 5]
 
 //---------------Begin tab------------------
 function TabPanel(props) {
@@ -49,7 +45,22 @@ function a11yProps(index) {
 }
 //---------------End tab------------------
 
+
+
+
 export default function TicketDetails2() {
+  const [selectedCheckboxes, setSelectedCheckboxes] = React.useState([]);
+  const handleCheckBox = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setSelectedCheckboxes([...selectedCheckboxes, value]);
+    } else {
+      setSelectedCheckboxes(
+        selectedCheckboxes.filter((checkboxValue) => checkboxValue !== value)
+      );
+    }
+  };
+
   // const closeDialog = (event) => {
   //   setDialog({ isOpen: false })
   // }
@@ -70,6 +81,17 @@ export default function TicketDetails2() {
   const [dataDialog, setDataDialog] = React.useState([])
   //---------------End Dialog ticket detail------------------
 
+  const [open2, setOpen2] = React.useState(false);
+  const handleClickOpen2 = () => {
+    setOpen2(true);
+  };
+
+  const handleClose2 = () => {
+    setActiveStep(0)
+    setOpen2(false);
+  };
+  const [dataDialog2, setDataDialog2] = React.useState([])
+
   //---------------Begin tab---------------
   const [value, setValue] = React.useState(0);
 
@@ -77,6 +99,38 @@ export default function TicketDetails2() {
     setValue(newValue);
   };
   //---------------End tab----------------
+
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [seats, setSeats] = React.useState([])
+  const getCell = (item) => {
+    console.log(item)
+    let url = `http://localhost:8080/api/user/getCell`;
+    let dataSend = {
+      transport_id: item.transport_id,
+      type: item.type
+    }
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then(data => {
+        setSeats(data.seats)
+        console.log(data)
+      })
+  }
+
 
 
   useEffect(() => {
@@ -100,7 +154,6 @@ export default function TicketDetails2() {
       })
       .then(data => {
         setDataTrip(data.result)
-        console.log(data)
       })
   }, [])
   return (
@@ -125,12 +178,11 @@ export default function TicketDetails2() {
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {`Xe ${item.type} chỗ`}
-
                       </Typography>
                       <div className='card-location'>
                         <div className='icon-tren'>
                           <RadioButtonChecked className='card-location-icon' />
-                          <div> &nbsp; {`${item.depart} ${item.begin_time}`}</div>
+                          <div> &nbsp; {`${item.depart}-${item.begin_time}`}</div>
                         </div>
                         <div className='icon-giua' > &nbsp; <br></br>  &nbsp; {item.time} <br></br> &nbsp; </div>
                         <div className='icon-duoi'>
@@ -140,7 +192,6 @@ export default function TicketDetails2() {
                       </div>
                     </Grid>
                     <Grid xs={3} sx={{ paddingTop: '185px' }}>
-
 
 
                       <Button
@@ -159,7 +210,7 @@ export default function TicketDetails2() {
                     <Grid xs={3} className='card-detail-right'>
                       <h4 className='price'>{`${item.price}VNĐ`}</h4>
                       <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
-                      <Button variant="contained" onClick={(e) => setBooking(!booking)}>Đặt vé</Button>
+                      <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2(); getCell(item) }}>Đặt vé</Button>
 
                     </Grid>
                   </Grid>
@@ -172,8 +223,8 @@ export default function TicketDetails2() {
               dialog={dialog}
               handleCloseDialog={(data) => closeDialog(data)}
             /> */}
-                </div>
-              )}
+
+
           </>
 
         )
@@ -189,7 +240,7 @@ export default function TicketDetails2() {
               <Tab label="Điểm đón trả" {...a11yProps(1)} />
               <Tab label="Đặt vé" {...a11yProps(2)} />
               <DialogActions>
-                <Button onClick={handleClose} sx={{ marginLeft: '300px' }}>&times;</Button>
+                <Button onClick={handleClose} sx={{ marginLeft: '300px', color: '#0000008f' }}>&times;</Button>
               </DialogActions>
             </Tabs>
           </Box>
@@ -234,6 +285,55 @@ export default function TicketDetails2() {
       {/* ------------------------------End dialog chitietvexe------------------------------ */}
 
 
+
+
+      {/* ------------------------------Begin dialog datve------------------------------ */}
+      <Dialog open={open2} onClose={handleClose2}>
+        <>
+          <Stepper activeStep={activeStep} style={{ marginBottom: "20px" }}>
+            <Step >
+              <StepLabel >
+                Chọn chỗ mong muốn
+              </StepLabel>
+            </Step>
+            <Step >
+              <StepLabel>
+                Tính cước
+              </StepLabel>
+            </Step>
+            <Step >
+              <StepLabel>
+                Thanh toán
+              </StepLabel>
+            </Step>
+          </Stepper>
+          {activeStep === 0 ?
+            <>
+              {seats.map(cell => {
+                return (
+                  <FormControlLabel
+                    disabled checked
+                    value={cell}
+                    control={<Checkbox />}
+                    label={cell.sit_number}
+                    labelPlacement="top"
+                    onChange={(e) => handleCheckBox(e)}
+                  />
+                )
+              })}
+
+            </>
+            : ""}
+
+          {activeStep !== 0 ? <Button onClick={(e) => { setActiveStep(activeStep - 1) }}>
+            Quay lại
+          </Button> : ''}
+          <Button onClick={(e) => { setActiveStep(activeStep + 1) }}>
+            tiếp tục
+          </Button>
+        </>
+      </Dialog>
+      {/* ------------------------------End dialog datve------------------------------ */}
     </>
   )
 }
