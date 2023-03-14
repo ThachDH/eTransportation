@@ -88,6 +88,7 @@ export default function TicketDetails2() {
 
   const handleClose2 = () => {
     setActiveStep(0)
+    setSelectedCheckboxes([])
     setOpen2(false);
   };
   const [dataDialog2, setDataDialog2] = React.useState([])
@@ -102,8 +103,37 @@ export default function TicketDetails2() {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [seats, setSeats] = React.useState([])
+  const tinhtien = () => {
+    let url = `http://localhost:8080/api/user/orderTicket`;
+    let temp = selectedCheckboxes.map(e => Number(e))
+    let dataSend = {
+      transport_id : dataDialog2.transport_id,
+      user_id : Number(localStorage.getItem('id')),
+      array_sit_number : temp,
+      quantity : selectedCheckboxes.length
+    }
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log(data)
+      })
+  }
+
   const getCell = (item) => {
-    console.log(item)
     let url = `http://localhost:8080/api/user/getCell`;
     let dataSend = {
       transport_id: item.transport_id,
@@ -127,7 +157,6 @@ export default function TicketDetails2() {
       })
       .then(data => {
         setSeats(data.seats)
-        console.log(data)
       })
   }
 
@@ -298,7 +327,7 @@ export default function TicketDetails2() {
             </Step>
             <Step >
               <StepLabel>
-                Tính cước
+                Tính tiền
               </StepLabel>
             </Step>
             <Step >
@@ -309,28 +338,49 @@ export default function TicketDetails2() {
           </Stepper>
           {activeStep === 0 ?
             <>
-              {seats.map(cell => {
-                return (
+              {seats.map(cell => (
+                cell.boolean ?
                   <FormControlLabel
-                    disabled checked
-                    value={cell}
+                    disabled
+                    checked
+                    value={cell.sit_number}
                     control={<Checkbox />}
                     label={cell.sit_number}
                     labelPlacement="top"
                     onChange={(e) => handleCheckBox(e)}
                   />
-                )
-              })}
-
+                  :
+                  <FormControlLabel
+                    value={cell.sit_number}
+                    control={<Checkbox />}
+                    label={cell.sit_number}
+                    labelPlacement="top"
+                    onChange={(e) => handleCheckBox(e)}
+                  />
+              ))}
             </>
             : ""}
 
-          {activeStep !== 0 ? <Button onClick={(e) => { setActiveStep(activeStep - 1) }}>
+          {activeStep === 1 ?
+            <>
+              <h1>{selectedCheckboxes.length}</h1>
+              <h1>{`${selectedCheckboxes.length * dataDialog2.price}`}</h1>
+            </>
+            : ""
+          }
+
+          {activeStep !== 0 ? <Button onClick={(e) => {
+            setActiveStep(activeStep - 1);
+            setSelectedCheckboxes([])
+          }}>
             Quay lại
           </Button> : ''}
-          <Button onClick={(e) => { setActiveStep(activeStep + 1) }}>
+
+          {activeStep === 2 ? <Button onClick={(e) => {tinhtien() }}>
+            Hoàn tất
+          </Button> : <Button onClick={(e) => { setActiveStep(activeStep + 1) }}>
             tiếp tục
-          </Button>
+          </Button>}
         </>
       </Dialog>
       {/* ------------------------------End dialog datve------------------------------ */}
