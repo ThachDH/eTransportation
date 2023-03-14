@@ -1,4 +1,5 @@
 import { CardActionArea, CardContent, CardMedia, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Box, Tabs, Tab } from '@mui/material';
+
 import Grid from '@mui/material/Grid';
 import React, { useEffect } from 'react'
 import PlaceIcon from '@mui/icons-material/Place';
@@ -77,6 +78,7 @@ export default function TicketDetails2() {
   };
   //---------------End tab----------------
 
+
   useEffect(() => {
     let url = `http://localhost:8080/api/getAllTrips`;
     fetch(url, {
@@ -123,11 +125,12 @@ export default function TicketDetails2() {
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {`Xe ${item.type} chỗ`}
+
                       </Typography>
                       <div className='card-location'>
                         <div className='icon-tren'>
                           <RadioButtonChecked className='card-location-icon' />
-                          <div> &nbsp; {`${item.depart}-${item.begin_time}`}</div>
+                          <div> &nbsp; {`${item.depart} ${item.begin_time}`}</div>
                         </div>
                         <div className='icon-giua' > &nbsp; <br></br>  &nbsp; {item.time} <br></br> &nbsp; </div>
                         <div className='icon-duoi'>
@@ -137,6 +140,7 @@ export default function TicketDetails2() {
                       </div>
                     </Grid>
                     <Grid xs={3} sx={{ paddingTop: '185px' }}>
+
 
 
                       <Button
@@ -155,7 +159,7 @@ export default function TicketDetails2() {
                     <Grid xs={3} className='card-detail-right'>
                       <h4 className='price'>{`${item.price}VNĐ`}</h4>
                       <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
-                      <Button variant="contained">Đặt vé</Button>
+                      <Button variant="contained" onClick={(e) => setBooking(!booking)}>Đặt vé</Button>
 
                     </Grid>
                   </Grid>
@@ -168,8 +172,8 @@ export default function TicketDetails2() {
               dialog={dialog}
               handleCloseDialog={(data) => closeDialog(data)}
             /> */}
-
-
+                </div>
+              )}
           </>
 
         )
