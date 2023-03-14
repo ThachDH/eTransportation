@@ -127,7 +127,7 @@ export function Generals() {
 
   //check truoc khi vao admin page da login chua
   if (localStorage.getItem('role') !== 'ADMIN') {
-    alert('m can dang nhap de vao trang admin')
+    alert('can dang nhap de vao trang admin')
     return (<Login />)
   }
   //logout

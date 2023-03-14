@@ -45,7 +45,17 @@ export default class AsNavFor extends Component {
                     })}
 
                 </Slider>
-                <p></p>
+                <p>
+                    {img.map((img) => {
+                        return (
+                            <p>
+                                {img.id}
+                            </p>
+                        )
+
+                    })}
+
+                </p>
                 <Slider
                     asNavFor={this.state.nav1}
                     ref={slider => (this.slider2 = slider)}

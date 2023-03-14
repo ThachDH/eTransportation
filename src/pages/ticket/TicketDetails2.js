@@ -1,13 +1,10 @@
-import { CardActionArea, CardContent, CardMedia, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Box, Tabs, Tab } from '@mui/material';
+import { CardActionArea, CardContent, CardMedia, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Box, Tabs, Tab, Stepper, Step, StepLabel } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useEffect } from 'react'
 import PlaceIcon from '@mui/icons-material/Place';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import './TicketDetail.scss';
 import { LocationSearching, RadioButtonChecked, South } from '@mui/icons-material';
-import DialogTicketDetails from '../../components/dialog/DialogTicketDetails';
-import { height, width } from '@mui/system';
-import { Nav } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import SlideTicketDetail from '../../components/dialog/SlideTicketDetail'
 
@@ -69,6 +66,16 @@ export default function TicketDetails2() {
   const [dataDialog, setDataDialog] = React.useState([])
   //---------------End Dialog ticket detail------------------
 
+  const [open2, setOpen2] = React.useState(false);
+  const handleClickOpen2 = () => {
+    setOpen2(true);
+  };
+
+  const handleClose2 = () => {
+    setOpen2(false);
+  };
+  const [dataDialog2, setDataDialog2] = React.useState([])
+
   //---------------Begin tab---------------
   const [value, setValue] = React.useState(0);
 
@@ -77,6 +84,7 @@ export default function TicketDetails2() {
   };
   //---------------End tab----------------
 
+  const [activeStep, setActiveStep] = React.useState(1);
   useEffect(() => {
     let url = `http://localhost:8080/api/getAllTrips`;
     fetch(url, {
@@ -155,7 +163,7 @@ export default function TicketDetails2() {
                     <Grid xs={3} className='card-detail-right'>
                       <h4 className='price'>{`${item.price}VNĐ`}</h4>
                       <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
-                      <Button variant="contained">Đặt vé</Button>
+                      <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2() }}>Đặt vé</Button>
 
                     </Grid>
                   </Grid>
@@ -185,7 +193,7 @@ export default function TicketDetails2() {
               <Tab label="Điểm đón trả" {...a11yProps(1)} />
               <Tab label="Đặt vé" {...a11yProps(2)} />
               <DialogActions>
-                <Button onClick={handleClose} sx={{ marginLeft: '300px' }}>&times;</Button>
+                <Button onClick={handleClose} sx={{ marginLeft: '300px', color: '#0000008f' }}>&times;</Button>
               </DialogActions>
             </Tabs>
           </Box>
@@ -230,6 +238,36 @@ export default function TicketDetails2() {
       {/* ------------------------------End dialog chitietvexe------------------------------ */}
 
 
+
+
+      {/* ------------------------------Begin dialog datve------------------------------ */}
+      <Dialog open={open2} onClose={handleClose2}>
+
+        <>
+
+          <Stepper activeStep={activeStep} style={{ marginBottom: "20px" }}>
+            <Step >
+              <StepLabel >
+                Chi tiết lệnh
+              </StepLabel>
+            </Step>
+            <Step >
+              <StepLabel>
+                Tính cước
+              </StepLabel>
+            </Step>
+            <Step >
+              <StepLabel>
+                Thanh toán
+              </StepLabel>
+            </Step>
+
+          </Stepper>
+
+        </>
+
+      </Dialog>
+      {/* ------------------------------End dialog datve------------------------------ */}
     </>
   )
 }
