@@ -136,7 +136,7 @@ class ComanyManage extends React.Component {
       dataTable: tempData
     });
   }
- 
+
   loadItem() {
     let url = `http://localhost:8080/api/admin/getAllCompany`;
     let dataSend = {
@@ -317,7 +317,7 @@ class ComanyManage extends React.Component {
                                       </div>
                                     ) : <div>
                                       <span>Bị Cấm</span>
-                                      <DangerousIcon sx={{color : 'red'}} />
+                                      <DangerousIcon sx={{ color: 'red' }} />
                                     </div>
                                     }
 
@@ -368,8 +368,8 @@ class ComanyManage extends React.Component {
           open={this.state.alert.isOpen}
           autoHideDuration={this.state.alert.duration}
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
+            vertical: 'bottom',
+            horizontal: 'left'
           }}
           onClose={() => {
             this.setState({ alert: { ...this.state.alert, isOpen: false } })

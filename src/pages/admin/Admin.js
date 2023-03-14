@@ -26,6 +26,7 @@ import Tab from '@mui/material/Tab';
 
 import '../../styles/custom.scss'
 import Login from '../login';
+import { Tooltip } from '@mui/material';
 
 //Begin-AppBar
 const drawerWidth = 200;
@@ -161,9 +162,12 @@ export function Generals() {
               Xin Chào Admin
             </Typography>
 
-            <IconButton color="inherit" href="/home" onClick={handleLogout} >
-              <LogoutIcon />
-            </IconButton>
+            <Tooltip title='Đăng xuất'>
+              <IconButton color="inherit" href="/home" onClick={handleLogout} >
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
+
 
 
           </Toolbar>
@@ -190,8 +194,8 @@ export function Generals() {
             onChange={handleChange}
             aria-label="Vertical tabs example"
             sx={{ borderRight: 1, borderColor: 'divider' }}  >
-            <Tab sx={{ justifyContent: 'flex-start' }} icon={<ApartmentIcon fontSize='large' />} iconPosition="start" label="Company"{...a11yProps(0)} />
-            <Tab sx={{ justifyContent: 'flex-start' }} icon={<PeopleIcon fontSize='large' />} iconPosition="start" label="User"{...a11yProps(1)} />
+            <Tab sx={{ justifyContent: 'flex-start' }} icon={<ApartmentIcon fontSize='large' />} iconPosition="start" label="Công ty"{...a11yProps(0)} />
+            <Tab sx={{ justifyContent: 'flex-start' }} icon={<PeopleIcon fontSize='large' />} iconPosition="start" label="Khách hàng"{...a11yProps(1)} />
           </Tabs>
         </Drawer>
         <Box

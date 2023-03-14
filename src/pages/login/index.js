@@ -29,9 +29,9 @@ export default function Login() {
 	const [kq, setState] = useState({
 		alert: {
 			isOpen: false,
-			message: 'Lỗi không xác định!',
-			duration: 10000,
-			type: 'info'
+			message: '',
+			duration: 0,
+			type: ''
 		}
 	});
 	const navigate = useNavigate()
@@ -71,10 +71,21 @@ export default function Login() {
 						alert: {
 							isOpen: true,
 							message: "Tài khoản của bạn đã bị khóa !!!",
-							duration: 3000,
+							duration: 1500,
 							type: 'error',
 						}
 					});
+				}
+				else if (data.data === false) {
+					setState({
+						alert: {
+							isOpen: true,
+							message: data.message,
+							duration: 1500,
+							type: 'error',
+						}
+					});
+					return
 				}
 				else {
 					if (data.userId !== undefined || data.companyId !== undefined) {
@@ -90,21 +101,10 @@ export default function Login() {
 						localStorage.setItem('email', getEmail);
 						localStorage.setItem('password', getPass);
 						localStorage.setItem('role', data.role);
+						localStorage.setItem('user_name', data.user_name);
 					}
 				}
 			})
-			.catch((err) => {
-				setState({
-					alert: {
-						isOpen: true,
-						message: "Tài khoản đăng nhập bạn không đúng, vui lòng nhập lại !!!",
-						duration: 3000,
-						type: 'error',
-					}
-				});
-				return err;
-			})
-
 	};
 
 	return (
@@ -192,8 +192,8 @@ export default function Login() {
 						open={kq.alert.isOpen}
 						autoHideDuration={kq.alert.duration}
 						anchorOrigin={{
-							vertical: 'top',
-							horizontal: 'right'
+							vertical: 'bottom',
+							horizontal: 'left'
 						}}
 						onClose={() => {
 							setState({ alert: { ...kq.alert, isOpen: false } })

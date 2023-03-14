@@ -45,7 +45,8 @@
 
         .price {
             color: #005f6e;
-            padding-bottom: 35px;
+            padding-bottom: 60px;
+            margin-top: -30px;
         }
 
         .css-sghohy-MuiButtonBase-root-MuiButton-root {
@@ -91,4 +92,12 @@
 .boloc {
     padding: 10px 0 0 15px;
     border: solid 1px #59575754;
+}
+
+
+.css-1t1j96h-MuiPaper-root-MuiDialog-paper {
+    max-height: 100% !important;
+    max-width: 100% !important;
+    width: 700px !important;
+    height: 600px !important;
 }
