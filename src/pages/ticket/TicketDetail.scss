@@ -58,7 +58,7 @@
         margin: 10px;
 
         .icon-tren {
-             display: flex;
+            display: flex;
 
             .card-location-icon {
                 opacity: 0.5 !important;
@@ -100,4 +100,11 @@
     max-width: 100% !important;
     width: 700px !important;
     height: 600px !important;
+}
+
+.luuydatve {
+    border-top: 1px solid black;
+    margin-top: 8%;
+    padding: 10px;
+    display: flex;
 }

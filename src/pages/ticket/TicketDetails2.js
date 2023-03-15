@@ -1,4 +1,4 @@
-import { CardActionArea, CardContent, CardMedia, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Box, Tabs, Tab, Stepper, Step, StepLabel, Checkbox, FormControlLabel } from '@mui/material';
+import { CardActionArea, CardContent, CardMedia, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Box, Tabs, Tab, Stepper, Step, StepLabel, Checkbox, FormControlLabel, IconButton, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import React, { useEffect } from 'react'
 import PlaceIcon from '@mui/icons-material/Place';
@@ -7,8 +7,8 @@ import './TicketDetail.scss';
 import { CheckBox, LocationSearching, RadioButtonChecked, South } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import SlideTicketDetail from '../../components/dialog/SlideTicketDetail'
-
-let arr = [1, 2, 3, 4, 5]
+import EventSeatIcon from '@mui/icons-material/EventSeat';
+import CircleIcon from '@mui/icons-material/Circle';
 
 //---------------Begin tab------------------
 function TabPanel(props) {
@@ -49,6 +49,15 @@ function a11yProps(index) {
 
 
 export default function TicketDetails2() {
+  const [colorSeat, setColorSeat] = React.useState('inherit');
+
+
+  const handleSelectSeat = () => {
+    if (colorSeat === 'inherit') {
+      setColorSeat('primary')
+    }
+
+  }
   const [selectedCheckboxes, setSelectedCheckboxes] = React.useState([]);
   const handleCheckBox = (event) => {
     const { value, checked } = event.target;
@@ -81,6 +90,8 @@ export default function TicketDetails2() {
   const [dataDialog, setDataDialog] = React.useState([])
   //---------------End Dialog ticket detail------------------
 
+  const [dataDialog2, setDataDialog2] = React.useState([])
+
   const [open2, setOpen2] = React.useState(false);
   const handleClickOpen2 = () => {
     setOpen2(true);
@@ -90,8 +101,8 @@ export default function TicketDetails2() {
     setActiveStep(0)
     setSelectedCheckboxes([])
     setOpen2(false);
+    setSeats([])
   };
-  const [dataDialog2, setDataDialog2] = React.useState([])
 
   //---------------Begin tab---------------
   const [value, setValue] = React.useState(0);
@@ -107,10 +118,10 @@ export default function TicketDetails2() {
     let url = `http://localhost:8080/api/user/orderTicket`;
     let temp = selectedCheckboxes.map(e => Number(e))
     let dataSend = {
-      transport_id : dataDialog2.transport_id,
-      user_id : Number(localStorage.getItem('id')),
-      array_sit_number : temp,
-      quantity : selectedCheckboxes.length
+      transport_id: dataDialog2.transport_id,
+      user_id: Number(localStorage.getItem('id')),
+      array_sit_number: temp,
+      quantity: selectedCheckboxes.length
     }
     fetch(url, {
       method: "POST",
@@ -129,7 +140,6 @@ export default function TicketDetails2() {
         return res.json();
       })
       .then(data => {
-        console.log(data)
       })
   }
 
@@ -318,7 +328,7 @@ export default function TicketDetails2() {
 
       {/* ------------------------------Begin dialog datve------------------------------ */}
       <Dialog open={open2} onClose={handleClose2}>
-        <>
+        <div style={{ margin: '10px' }}>
           <Stepper activeStep={activeStep} style={{ marginBottom: "20px" }}>
             <Step >
               <StepLabel >
@@ -327,7 +337,7 @@ export default function TicketDetails2() {
             </Step>
             <Step >
               <StepLabel>
-                Tính tiền
+                Thông tin
               </StepLabel>
             </Step>
             <Step >
@@ -337,53 +347,195 @@ export default function TicketDetails2() {
             </Step>
           </Stepper>
           {activeStep === 0 ?
-            <>
-              {seats.map(cell => (
-                cell.boolean ?
-                  <FormControlLabel
-                    disabled
-                    checked
-                    value={cell.sit_number}
-                    control={<Checkbox />}
-                    label={cell.sit_number}
-                    labelPlacement="top"
-                    onChange={(e) => handleCheckBox(e)}
-                  />
-                  :
-                  <FormControlLabel
-                    value={cell.sit_number}
-                    control={<Checkbox />}
-                    label={cell.sit_number}
-                    labelPlacement="top"
-                    onChange={(e) => handleCheckBox(e)}
-                  />
-              ))}
-            </>
+            <Grid container>
+              {seats.length <= 16 ?
+                //xe duoi 16 cho ngoi
+                <>
+                  <Grid xs={1}></Grid>
+                  <Grid xs={3} sx={{ border: '1px solid black', borderRadius: '40px' }}>
+                    <CircleIcon sx={{ display: 'block', margin: '12px' }}></CircleIcon>
+                    {seats.map((seats) => {
+                      return (
+                        <>
+                          {seats.boolean === true ?
+                            <Tooltip title='Hết'>
+                              <FormControlLabel
+                                disabled
+                                value={seats.sit_number}
+                                control={<Checkbox icon={<EventSeatIcon fontSize='large' />} />}
+                                onClick={handleCheckBox}
+                                sx={{ margin: 'auto' }} />
+                            </Tooltip>
+                            :
+                            <Tooltip title={'Ghế: ' + seats.sit_number} arrow >
+                              <FormControlLabel
+                                value={seats.sit_number}
+                                control={<Checkbox icon={<EventSeatIcon fontSize='large' />} checkedIcon={<EventSeatIcon fontSize='large' />} />}
+                                onClick={handleCheckBox}
+                                sx={{ margin: 'auto' }} ></FormControlLabel>
+                            </Tooltip>
+                          }
+                        </>
+                      )
+                    })}
+                  </Grid>
+                  <Grid xs={4}></Grid>
+                  <Grid xs={4}>
+                    <div>&nbsp;</div>
+
+                    <div>
+                      <EventSeatIcon color='disabled' fontSize='large' />&nbsp;&nbsp;:  Đã hết
+                    </div>
+                    <div>&nbsp;</div>
+                    <div>
+                      <EventSeatIcon style={{ color: 'rgba(0, 0, 0, 0.6)' }} fontSize='large' />&nbsp;&nbsp;:  Còn trống
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div>
+                      <EventSeatIcon color='primary' fontSize='large' />&nbsp;&nbsp;:  Đang chọn
+                    </div>
+                    <div>&nbsp;</div>
+
+                    Số ghế đang chọn:
+                    {selectedCheckboxes.map((selectedCheckboxes) => {
+                      return (
+                        ' ' + selectedCheckboxes
+                      )
+                    })}
+                  </Grid>
+
+                </> :
+                //xe lon hon 45 cho 
+                <>
+                  <Grid xs={1}></Grid>
+
+                  <Grid xs={4} sx={{ border: '1px solid black', borderRadius: '40px' }}>
+
+                    <CircleIcon sx={{ display: 'block', margin: '12px' }}></CircleIcon>
+
+                    {seats.map((seats) => {
+                      return (
+                        <>
+                          {seats.boolean === true ?
+                            <FormControlLabel
+                              disabled
+                              value={seats.sit_number}
+                              control={<Checkbox icon={<EventSeatIcon fontSize='large' />} />}
+                              title={'Ghế: ' + seats.sit_number}
+                              onClick={handleCheckBox}
+                              sx={{ margin: 'auto' }} />
+                            :
+                            <Tooltip title={'Ghế: ' + seats.sit_number} arrow >
+                              <FormControlLabel
+                                value={seats.sit_number}
+                                control={<Checkbox icon={<EventSeatIcon fontSize='large' />} checkedIcon={<EventSeatIcon fontSize='large' />} />}
+                                onClick={handleCheckBox}
+                                sx={{ margin: 'auto' }} ></FormControlLabel>
+                            </Tooltip>
+
+                          }
+                        </>
+                      )
+                    })}
+
+                  </Grid>
+                  <Grid xs={3}></Grid>
+                  <Grid xs={4}>  <div>&nbsp;</div>
+
+                    <div>
+                      <EventSeatIcon color='disabled' fontSize='large' />&nbsp;&nbsp;:  Đã hết
+                    </div>
+                    <div>&nbsp;</div>
+                    <div>
+                      <EventSeatIcon style={{ color: 'rgba(0, 0, 0, 0.6)' }} fontSize='large' />&nbsp;&nbsp;:  Còn trống
+                    </div>
+                    <div>&nbsp;</div>
+
+                    <div>
+                      <EventSeatIcon color='primary' fontSize='large' />&nbsp;&nbsp;:  Đang chọn
+                    </div>
+                    <div>&nbsp;</div>
+
+                    Số ghế đang chọn:
+                    {selectedCheckboxes.map((selectedCheckboxes) => {
+                      return (
+                        ' ' + selectedCheckboxes
+                      )
+                    })}
+                  </Grid>
+
+                </>}
+
+
+
+            </Grid>
             : ""}
 
+          {/* -----------------------Begin step 2----------------------- */}
           {activeStep === 1 ?
             <>
-              <h1>{selectedCheckboxes.length}</h1>
-              <h1>{`${selectedCheckboxes.length * dataDialog2.price}`}</h1>
+              <p style={{ margin: '3% 0% 0% 5%' }}>
+                {console.log(dataDialog2)}
+                <p>Nhà xe: {dataDialog2.company_name}</p>
+                <p>Loại xe: {dataDialog2.transport_name} {dataDialog2.type} chỗ</p>
+                <p>Điểm đón: {dataDialog2.depart}</p>
+                <p>Thời gian khởi hành: {dataDialog2.depart_date} {dataDialog2.begin_time}</p>
+
+                <p>Điểm đến: {dataDialog2.destination}</p>
+                <p>Thời gian đến (dự tính): {dataDialog2.end_time}</p>
+                <p>Giá vé: {dataDialog2.price} VNĐ</p>
+
+                <p>Số lượng vé: x{selectedCheckboxes.length} </p>
+                <p>Số ghế: {selectedCheckboxes.map((selectedCheckboxes) => {
+                  return (
+                    ' ' + selectedCheckboxes
+                  )
+                })} </p>
+              </p>
+
+              <h5 style={{ textAlign: 'center' }}>Tổng giá vé: {`${selectedCheckboxes.length * dataDialog2.price}`} VNĐ</h5>
+              <em className='luuydatve'><p style={{ color: 'rgb(25, 141, 14)' }}>Lưu ý:&nbsp;</p><p>Vui lòng kiểm kỹ thông tin trước khi đặt vé!!! </p> </em>
             </>
             : ""
           }
+          {/* -----------------------End step 2----------------------- */}
 
-          {activeStep !== 0 ? <Button onClick={(e) => {
-            setActiveStep(activeStep - 1);
-            setSelectedCheckboxes([])
-          }}>
-            Quay lại
-          </Button> : ''}
 
-          {activeStep === 2 ? <Button onClick={(e) => {tinhtien() }}>
-            Hoàn tất
-          </Button> : <Button onClick={(e) => { setActiveStep(activeStep + 1) }}>
-            tiếp tục
-          </Button>}
-        </>
+
+          {/* -----------------------Begin nut button----------------------- */}
+          {activeStep === 0 ?
+            <>
+              {selectedCheckboxes.length === 0 ?
+                <Button style={{ bottom: '19%', right: '32.5%', position: 'fixed' }} disabled >Tiếp tục</Button> : <Button style={{ bottom: '19%', right: '32.5%', position: 'fixed' }} onClick={(e) => { setActiveStep(activeStep + 1) }}>Tiếp tục</Button>
+              }
+            </>
+            :
+            <>
+              {activeStep === 1 ?
+                <>
+                  <Button style={{ bottom: '19%', right: '32.5%', position: 'fixed' }} onClick={(e) => { setActiveStep(activeStep + 1) }}>Tiếp tục</Button>
+                  <Button style={{ bottom: '19%', position: 'fixed' }} onClick={(e) => { setActiveStep(activeStep - 1); setSelectedCheckboxes([]) }}>Quay lại</Button>
+                </>
+                :
+                <>
+                  {activeStep === 2 ?
+                    <>
+                      <Button style={{ bottom: '19%', position: 'fixed' }} onClick={(e) => { setActiveStep(activeStep - 1); }}>Quay lại</Button>
+                      <Button style={{ bottom: '19%', right: '32.5%', position: 'fixed' }} onClick={(e) => { tinhtien() }}>Hoàn tất</Button>
+                    </>
+                    :
+                    <>
+                    </>}
+                </>}
+            </>
+          }
+
+
+          {/* -----------------------End nut button----------------------- */}
+        </div>
       </Dialog>
-      {/* ------------------------------End dialog datve------------------------------ */}
+      {/* ------------------------------End dialog dat ve------------------------------ */}
     </>
   )
 }
