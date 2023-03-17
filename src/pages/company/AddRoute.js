@@ -63,7 +63,6 @@ class AddRoute extends React.Component {
         headerName: "STT",
         width: 100,
         headerAlign: "center"
-
       },
       {
         field: "depart",
@@ -78,7 +77,6 @@ class AddRoute extends React.Component {
         flex: 1,
         editable: true,
         headerAlign: "center"
-
       },
     ]
     this.createRows = (data) => data.map((row, index) => ({

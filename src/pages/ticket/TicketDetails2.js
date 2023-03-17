@@ -10,6 +10,9 @@ import SlideTicketDetail from '../../components/dialog/SlideTicketDetail'
 import EventSeatIcon from '@mui/icons-material/EventSeat';
 import CircleIcon from '@mui/icons-material/Circle';
 
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
 //---------------Begin tab------------------
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,8 +53,18 @@ function a11yProps(index) {
 
 export default function TicketDetails2() {
   const [colorSeat, setColorSeat] = React.useState('inherit');
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
-
+  const [dialogAlert, setDialogAlert] = React.useState({
+    alert: {
+      isOpen: false,
+      message: 'Lỗi không xác định!',
+      duration: 5000,
+      type: 'info' // info / warning / error / success
+    },
+  })
   const handleSelectSeat = () => {
     if (colorSeat === 'inherit') {
       setColorSeat('primary')
@@ -140,6 +153,17 @@ export default function TicketDetails2() {
         return res.json();
       })
       .then(data => {
+        if (data.data) {
+          console.log(dialogAlert.alert)
+          setDialogAlert({
+            alert: {
+              isOpen: true,
+              message: 'Đặt vé thành công!',
+              duration: 5000,
+              type: 'success' // info / warning / error / success
+            },
+          })
+        }
       })
   }
 
@@ -262,8 +286,25 @@ export default function TicketDetails2() {
               dialog={dialog}
               handleCloseDialog={(data) => closeDialog(data)}
             /> */}
-
-
+            {/* -------------------- global alert -------------------- */}
+            <Snackbar
+              open={dialogAlert.alert.isOpen}
+              autoHideDuration={dialogAlert.alert.duration}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right'
+              }}
+              onClose={() => {
+                setDialogAlert({ alert: { ...dialogAlert.alert, isOpen: false } })
+              }}
+            >
+              <Alert
+                severity={dialogAlert.alert.type}
+                sx={{ width: '100%' }}
+              >
+                {dialogAlert.alert.message}
+              </Alert>
+            </Snackbar>
           </>
 
         )

@@ -26,8 +26,6 @@ function Router() {
                 <Route path="/company-route" element={<AddRoute />} />
                 <Route path="/company-trip" element={<AddTrip />} />
                 <Route path="/company-ticket" element={<AddTicket />} />
-
-
                 <Route path="/user-account-page" element={<UserAccount />} />
 
 

@@ -90,7 +90,7 @@ class AddTrip extends React.Component {
         type: 'singleSelect',
         valueOptions: () => {
           const options = this.state.destinationDid;
-          
+
           return options;
         }
       },
@@ -125,6 +125,13 @@ class AddTrip extends React.Component {
         editable: true,
         headerAlign: "center",
         type: 'dateTime',
+      },
+      {
+        field: "transport_name",
+        headerName: 'Tên xe',
+        flex: 1,
+        editable: true,
+        headerAlign: "center",
       },
       {
         field: "type",
@@ -234,16 +241,16 @@ class AddTrip extends React.Component {
 
   handleSave() {
     let url = `http://localhost:8080/api/company/createUpdateTripByCompany`;
-    
+
     let checkColumn = {
       depart: "Điểm đi",
       destination: "Điểm đến",
-      distance : "Khoảng cách",
-      price : "Giá xe",
-      begin_time : "Thời gian đi" ,
-      end_time : "Thời gian đến",
-      type : "Loại xe",
-      image_path : "Ảnh xe"
+      distance: "Khoảng cách",
+      price: "Giá xe",
+      begin_time: "Thời gian đi",
+      end_time: "Thời gian đến",
+      type: "Loại xe",
+      image_path: "Ảnh xe"
 
 
     }
@@ -267,8 +274,8 @@ class AddTrip extends React.Component {
       })
       return;
     }
-    dataSend.map(e=> {
-       return e['company_id'] = Number(localStorage.getItem('id'))
+    dataSend.map(e => {
+      return e['company_id'] = Number(localStorage.getItem('id'))
     })
     fetch(url, {
       method: "POST",
@@ -286,8 +293,8 @@ class AddTrip extends React.Component {
         }
         return res.json();
       })
-      .then(data =>{
-        if(data.array_object[0].data) {
+      .then(data => {
+        if (data.array_object[0].data) {
           this.setState({
             alert: {
               isOpen: true,
@@ -304,7 +311,7 @@ class AddTrip extends React.Component {
     //API view Route
     let url = `http://localhost:8080/api/company/getRoutesByComId`;
     let dataSend = {
-      company_id : Number(localStorage.getItem('id'))
+      company_id: Number(localStorage.getItem('id'))
     }
     fetch(url, {
       method: "POST",
@@ -327,8 +334,8 @@ class AddTrip extends React.Component {
           let tempdepart = data.result.map(e => e.depart)
           let tempDetination = data.result.map(e => e.destination)
           this.setState({
-            departDid : tempdepart,
-            destinationDid : tempDetination
+            departDid: tempdepart,
+            destinationDid: tempDetination
           })
         }
       })
