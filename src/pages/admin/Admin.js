@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-
+import MuiAlert from '@mui/material/Alert';
 import CompanyManage from './ComanyManage'
 import UserManage from './UserManage'
 
@@ -26,7 +26,8 @@ import Tab from '@mui/material/Tab';
 
 import '../../styles/custom.scss'
 import Login from '../login';
-import { Tooltip } from '@mui/material';
+import { Snackbar, Tooltip } from '@mui/material';
+import ErrorPage from '../errorpage/ErrorPage';
 
 //Begin-AppBar
 const drawerWidth = 200;
@@ -112,6 +113,7 @@ function a11yProps(index) {
 }
 //End-Tab
 
+
 export function Generals() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -126,103 +128,108 @@ export function Generals() {
   //AppBar
 
   //check truoc khi vao admin page da login chua
-  if (localStorage.getItem('role') !== 'ADMIN') {
-    alert('m can dang nhap de vao trang admin')
-    return (<Login />)
+  if (localStorage.getItem('role') !== 'ADMIN' || localStorage.getItem('role' === null)) {
+    return (window.location.href = `/error-page/${1}`)
   }
   //logout
   const handleLogout = () => {
     localStorage.clear();
   }
   return (
-    <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: 'flex' }}>
-        <CssBaseline />
-        <AppBar position="absolute" open={open}>
-          <Toolbar
+    <>
+      <ThemeProvider theme={mdTheme}>
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          <AppBar position="absolute" open={open}>
+            <Toolbar
+              sx={{
+                pr: '24px', // keep right padding when drawer closed
+              }}
+            >
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={toggleDrawer}
+                sx={{ marginRight: '36px', ...(open && { display: 'none' }), }} >
+                <MenuIcon />
+              </IconButton>
+
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                sx={{ flexGrow: 1 }}>
+                Xin Chào Admin
+              </Typography>
+
+              <Tooltip title='Đăng xuất'>
+                <IconButton color="inherit" href="/home" onClick={handleLogout} >
+                  <LogoutIcon />
+                </IconButton>
+              </Tooltip>
+
+
+
+            </Toolbar>
+          </AppBar>
+
+          <Drawer variant="permanent" open={open}>
+            <Toolbar
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                px: [1],
+              }}>
+              <IconButton onClick={toggleDrawer}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </Toolbar>
+
+            <Divider />
+            <Tabs
+              orientation="vertical"
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+              sx={{ borderRight: 1, borderColor: 'divider' }}  >
+              <Tab sx={{ justifyContent: 'flex-start' }} icon={<ApartmentIcon fontSize='large' />} iconPosition="start" label="Công ty"{...a11yProps(0)} />
+              <Tab sx={{ justifyContent: 'flex-start' }} icon={<PeopleIcon fontSize='large' />} iconPosition="start" label="Khách hàng"{...a11yProps(1)} />
+            </Tabs>
+          </Drawer>
+          <Box
+            component="main"
             sx={{
-              pr: '24px', // keep right padding when drawer closed
+              backgroundColor: (theme) =>
+                theme.palette.mode === 'light'
+                  ? theme.palette.grey[100]
+                  : theme.palette.grey[900],
+              flexGrow: 1,
+              height: '100vh',
+              overflow: 'auto',
             }}
           >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{ marginRight: '36px', ...(open && { display: 'none' }), }} >
-              <MenuIcon />
-            </IconButton>
+            <Toolbar />
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+              <TabPanel value={value} index={0}>
+                <CompanyManage></CompanyManage>
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <UserManage></UserManage>
+              </TabPanel>
 
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}>
-              Xin Chào Admin
-            </Typography>
-
-            <Tooltip title='Đăng xuất'>
-              <IconButton color="inherit" href="/home" onClick={handleLogout} >
-                <LogoutIcon />
-              </IconButton>
-            </Tooltip>
-
-
-
-          </Toolbar>
-        </AppBar>
-
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              px: [1],
-            }}>
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-
-          <Divider />
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={value}
-            onChange={handleChange}
-            aria-label="Vertical tabs example"
-            sx={{ borderRight: 1, borderColor: 'divider' }}  >
-            <Tab sx={{ justifyContent: 'flex-start' }} icon={<ApartmentIcon fontSize='large' />} iconPosition="start" label="Công ty"{...a11yProps(0)} />
-            <Tab sx={{ justifyContent: 'flex-start' }} icon={<PeopleIcon fontSize='large' />} iconPosition="start" label="Khách hàng"{...a11yProps(1)} />
-          </Tabs>
-        </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <TabPanel value={value} index={0}>
-              <CompanyManage></CompanyManage>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <UserManage></UserManage>
-            </TabPanel>
-
-          </Container>
+            </Container>
+          </Box>
         </Box>
-      </Box>
-    </ThemeProvider>
+
+      </ThemeProvider>
+
+
+    </>
+
   );
 }
 

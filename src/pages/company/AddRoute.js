@@ -117,7 +117,7 @@ class AddRoute extends React.Component {
     //API view Route
     let url = `http://localhost:8080/api/company/getRoutesByComId`;
     let dataSend = {
-      company_id : Number(localStorage.getItem('id'))
+      company_id: Number(localStorage.getItem('id'))
     }
     fetch(url, {
       method: "POST",
@@ -162,12 +162,12 @@ class AddRoute extends React.Component {
       })
   }
   handleDelete() {
-    
+
   }
 
   handleSave() {
     let url = `http://localhost:8080/api/company/createUpdateRouteByComId`;
-    
+
     let checkColumn = {
       depart: "Điểm đi",
       destination: "Điểm đến",
@@ -192,8 +192,8 @@ class AddRoute extends React.Component {
       })
       return;
     }
-    dataSend.map(e=> {
-       return e['company_id'] = Number(localStorage.getItem('id'))
+    dataSend.map(e => {
+      return e['company_id'] = Number(localStorage.getItem('id'))
     })
     fetch(url, {
       method: "POST",
@@ -211,8 +211,8 @@ class AddRoute extends React.Component {
         }
         return res.json();
       })
-      .then(data =>{
-        if(data.array_object[0].data) {
+      .then(data => {
+        if (data.array_object[0].data) {
           this.setState({
             alert: {
               isOpen: true,
@@ -232,7 +232,7 @@ class AddRoute extends React.Component {
   render() {
     return (
       <>
-        <Card style={{ marginBottom: "12px" }}>
+        <Card >
           <CardContent>
             <Grid container>
               <Grid item xs={12} spacing={2}>
@@ -303,7 +303,7 @@ class AddRoute extends React.Component {
                 </Stack>
                 <Divider />
                 <Grid item mt={1} md={12}>
-                <DataGrid
+                  <DataGrid
                     className="m-table"
                     rows={(this.state.dataTable)
                       .filter(data => data.depart.toUpperCase().includes(this.state.tableFilter.depart.toUpperCase()))

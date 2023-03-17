@@ -26,6 +26,7 @@ export default function Login() {
 	const Alert = React.forwardRef(function Alert(props, ref) {
 		return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 	});
+
 	const [kq, setState] = useState({
 		alert: {
 			isOpen: false,
@@ -34,6 +35,7 @@ export default function Login() {
 			type: ''
 		}
 	});
+
 	const navigate = useNavigate()
 	const [getEmail, setEmail] = useState('');
 	const [getPass, setPass] = useState('');
@@ -41,7 +43,6 @@ export default function Login() {
 
 
 	const handleSubmit = (event) => {
-
 		let url = `http://localhost:8080/api/login`;
 		let dataSend = {
 			email: getEmail,
@@ -63,9 +64,12 @@ export default function Login() {
 					throw new `Error`(text);
 				}
 				return res.json();
+
 			})
 			.then((data) => {
 				console.log(data)
+
+
 				if (data.status === 0) {
 					setState({
 						alert: {
@@ -95,13 +99,13 @@ export default function Login() {
 						else if (data.role === 'ADMIN') {
 							navigate(`/admin-page`)
 						} else if (data.role === 'COMPANY') {
-							navigate(`/company-route`)
+							navigate(`/company-page`)
 						}
 						localStorage.setItem('id', data.userId ? data.userId : data.companyId);
 						localStorage.setItem('email', getEmail);
 						localStorage.setItem('password', getPass);
 						localStorage.setItem('role', data.role);
-						localStorage.setItem('user_name', data.user_name);
+						localStorage.setItem('user_name', data.user_name ? data.user_name : data.companyName);
 					}
 				}
 			})
@@ -109,6 +113,7 @@ export default function Login() {
 
 	return (
 		<>
+
 			<Navigation />
 			<div className='backgound-login'>
 				<img src={background} alt="background" height="100%" width="100%" ></img>
