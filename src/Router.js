@@ -10,6 +10,9 @@ import AddRoute from "./pages/company/AddRoute";
 import AddTrip from "./pages/company/AddTrip";
 import AddTicket from "./pages/company/AddTicket";
 import UserAccount from "./pages/user/UserAccount";
+import ErrorPage from './pages/errorpage/ErrorPage';
+import { CompanyPage } from "./pages/company/CompanyPage";
+
 function Router() {
     return (
         <BrowserRouter>
@@ -22,11 +25,12 @@ function Router() {
                 <Route path="/ticketdetails" element={<Ticketdetails />} />
                 <Route path="/admin-page" element={<Generals />} />
                 {/* <Route path="/admin-page" render={() => { return <Generals /> }}></Route> */}
-                <Route path="/company-page" element={<Page />} />
+                <Route path="/company-page" element={<CompanyPage />} />
                 <Route path="/company-route" element={<AddRoute />} />
                 <Route path="/company-trip" element={<AddTrip />} />
                 <Route path="/company-ticket" element={<AddTicket />} />
                 <Route path="/user-account-page" element={<UserAccount />} />
+                <Route path="/error-page/:id" element={<ErrorPage />} />
 
 
             </Routes>

@@ -267,7 +267,7 @@ class ComanyManage extends React.Component {
               <Divider />
               <TableContainer>
                 <Table aria-label="table">
-                  <TableHead sx={{ bgcolor: '#00FFFF' }}>
+                  <TableHead sx={{ bgcolor: '#34749245' }}>
                     <TableRow key={'header-0'}>
                       {columns.map((column) => (
                         <TableCell
