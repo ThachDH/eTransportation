@@ -78,26 +78,27 @@ function numFormatter(num) {
 
 export default function TicketPage() {
     const [value, setValue] = React.useState(1);
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
+    const [arrayTicket, setArrayTicket] = React.useState([]);
+    const actionSearch = (arrTicketSearch) => {
+        setArrayTicket(arrTicketSearch)
+    }
     return (
         <>
             <Navigation />
             <div className="home-header-img">
                 <div className="home-header-search-bar">
-                    <SearchBar />
+                    <SearchBar
+                        handleChange={(arrTicketSearch) => actionSearch(arrTicketSearch)}
+                    />
                 </div>
             </div>
-
             <Container>
-
                 {/* bo loc */}
                 <div>Bộ lọc</div>
-
-
                 <Grid container spacing={4}>
                     <Grid item xs={2.5}  >
                         <Grid className='boloc' >
@@ -141,19 +142,15 @@ export default function TicketPage() {
                             </FormGroup>
 
                         </Grid>
-
-
                     </Grid>
-
                     {/* Ticket detail */}
                     <Grid item xs={9.5} >
-                        <Ticketdetails2 />
+                        <Ticketdetails2
+                            arrayTicket={arrayTicket}
+                        />
                     </Grid>
-
                 </Grid>
-
             </Container>
-
             <Footer />
         </>
     )

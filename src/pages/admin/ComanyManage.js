@@ -109,7 +109,16 @@ class ComanyManage extends React.Component {
   }
   closeDialog(dataSend) {
     console.log(dataSend)
+    let temp = this.state.dataTable
+    let a = temp.map(e => {
+      if (e.email === dataSend.email) {
+        e.status = dataSend.status
+      }
+      return e
+    })
+    console.log(a)
     this.setState({
+      dataTable: a,
       dialog: {
         isOpen: false,
         data: null,
@@ -296,7 +305,7 @@ class ComanyManage extends React.Component {
                         return (
                           <TableRow
                             hover
-                            key={row.name}
+                            key={index}
                           >
                             {columns.map((column) => {
                               const value = row[column.id];

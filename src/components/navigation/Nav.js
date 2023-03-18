@@ -32,6 +32,7 @@ function Navigation() {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link href="#features">Giới thiệu</Nav.Link>
+                            <Nav.Link href="ticketpage">Mua vé</Nav.Link>
                             <Nav.Link href="#pricing">Bảng giá</Nav.Link>
                             <NavDropdown title="Dịch Vụ" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">Xe 16 Chỗ</NavDropdown.Item>

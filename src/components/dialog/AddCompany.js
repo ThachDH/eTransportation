@@ -133,6 +133,7 @@ class AddCompany extends React.Component {
         return res.json();
       })
       .then(data => {
+        this.closeDialog(dataSend)
         this.setState({
           alert: {
             isOpen: true,

@@ -106,11 +106,11 @@ class UserManage extends React.Component {
         type: "actions",
         width: 320,
         getActions: (params) => {
-          console.log(params)
           return [
             <Checkbox
+              onChange={(e) => { this.handleBanUser(params.row.email) ; this.handleChangeStatus(params.row.stt - 1,e.target.checked, params.row); }}
               checked={
-                params.row.status === 1 ? true : false
+                params.row.status
               }
             ></Checkbox>
           ];
@@ -128,6 +128,56 @@ class UserManage extends React.Component {
   componentDidMount() {
     this.loadItem()
   }
+
+  handleChangeStatus(idx,status, row) {
+    const { dataTable } = this.state;
+    let updateData = dataTable;
+    updateData[idx]['status'] = status;
+    this.setState({
+      dataTable: updateData
+    })
+  }
+
+  handleBanUser(params) {
+    let url = `http://localhost:8080/api/admin/banUserByEmail`;
+    let dataSend = {
+      email: params
+    }
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if(data.data) {
+          this.setState({
+            alert: {
+              isOpen: true,
+              duration: 2000,
+              message: 'Chỉnh sửa trạng thái thành công!',
+              type: 'success',
+            },
+          })
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        return err;
+      })
+  }
+
   loadItem() {
     let url = `http://localhost:8080/api/admin/getAllUser`;
     let dataSend = {

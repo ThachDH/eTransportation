@@ -18,7 +18,6 @@ const HomePage = () => {
             <Navigation />
             <div className="home-header-img">
                 <div className="home-header-search-bar">
-                    <SearchBar />
                 </div>
             </div>
             <PopularRoutes />

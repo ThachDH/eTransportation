@@ -25,8 +25,12 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import AdjustIcon from '@mui/icons-material/Adjust';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import Autocomplete from '@mui/material/Autocomplete';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import Picktime from './Picktime';
+import moment from "moment";
 
 export default class SearchBar extends React.Component {
   constructor(props) {
@@ -36,7 +40,9 @@ export default class SearchBar extends React.Component {
       destinationDid: [],
       departS: '',
       destinationS: '',
-      depart_dateS : '',
+      depart_dateS: '',
+
+      arrTicketSearch: [],
     }
 
   }
@@ -66,7 +72,6 @@ export default class SearchBar extends React.Component {
         return res.json();
       })
       .then(data => {
-        console.log(data)
         if (data.result.length > 0) {
           let tempdepart = data.result.map(e => e.depart)
           let tempDetination = data.result.map(e => e.destination)
@@ -80,7 +85,43 @@ export default class SearchBar extends React.Component {
   handleSearch() {
     let url = `http://localhost:8080/api/getTrips`;
     let dataSend = {
+      depart: this.state.departS,
+      destination: this.state.destinationS,
+      depart_date: this.state.depart_dateS
     }
+    fetch(url, {
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(dataSend),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new `Error`(text);
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log(data)
+        if (data.data) {
+          console.log('asd')
+          this.props.handleChange(data.result)
+
+          // this.setState({
+          //   arrTicketSearch: data.result
+          // })
+        } else {
+          this.props.handleChange([])
+
+          // this.setState({
+          //   arrTicketSearch: []
+          // })
+        }
+      })
   }
   render() {
     return (
@@ -108,9 +149,9 @@ export default class SearchBar extends React.Component {
               id="combo-box-demo"
               options={this.state.departDid}
               sx={{ width: 260 }}
-              onClick={(e) => {
+              onChange={(e, i) => {
                 this.setState({
-                  departS: e.target.value
+                  departS: i
                 })
               }}
               renderInput={(params) => <TextField {...params} label="Nơi xuất phát" />}
@@ -126,26 +167,30 @@ export default class SearchBar extends React.Component {
               id="combo-box-demo"
               options={this.state.destinationDid}
               sx={{ width: 260 }}
-              onClick={(e) => {
+              onChange={(e, i) => {
                 this.setState({
-                  destinationS: e.target.value
+                  destinationS: i
                 })
               }}
               renderInput={(params) => <TextField {...params} label="Nơi đến" />}
             />
             <Divider />
-            {/* <IconButton sx={{ p: '10px' }} aria-label="menu">
-              <CalendarMonthOutlinedIcon />
-            </IconButton>
-            <InputBase
-              placeholder="Nhập ngày đi"
-            //  inputProps={{ 'aria-label': 'Nhap ngay di' }}
-            /> */}
-            <Picktime ></Picktime>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Chọn ngày đi"
+                value={this.state.depart_dateS}
+                onChange={(newValue, e) => {
+                  this.setState({
+                    depart_dateS: newValue.format("YYYY-MM-DD"),
+                  })
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
           </Paper>
 
           <Button
-            href="/ticketpage"
+            // href="/ticketpage"
             type="button"
             variant="contained"
             sx={{ width: 150, backgroundColor: "#f0d455" }}
