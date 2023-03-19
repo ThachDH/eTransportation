@@ -109,6 +109,10 @@ export default class SearchBar extends React.Component {
         console.log(data)
         if (data.data) {
           console.log('asd')
+          data.result.map(e=> {
+            e.begin_time = moment(e.begin_time).format('DD/MM HH:mm:ss')
+          e.end_time = moment(e.end_time).format('DD/MM HH:mm:ss')
+          })
           this.props.handleChange(data.result)
 
           // this.setState({

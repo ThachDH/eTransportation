@@ -67,14 +67,26 @@ export default function Register() {
                 return res.json();
             })
             .then(data => {
-                setState({
-                    alert: {
-                        isOpen: true,
-                        message: "Đăng kí thành công!!!",
-                        duration: 3000,
-                        type: 'success',
-                    }
-                });
+                if(data.data) {
+                    setState({
+                        alert: {
+                            isOpen: true,
+                            message: "Đăng kí thành công!!!",
+                            duration: 3000,
+                            type: 'success',
+                        }
+                    });
+                } else {
+                    setState({
+                        alert: {
+                            isOpen: true,
+                            message: "Đăng kí thất bại!!!",
+                            duration: 3000,
+                            type: 'error',
+                        }
+                    });
+                }
+                
             })
             .catch(err => {
                 setState({

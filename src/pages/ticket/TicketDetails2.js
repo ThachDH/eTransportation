@@ -53,7 +53,7 @@ function a11yProps(index) {
 
 
 
-export default function TicketDetails2({ arrayTicket }) {
+export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
   const [colorSeat, setColorSeat] = React.useState('inherit');
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -178,7 +178,7 @@ export default function TicketDetails2({ arrayTicket }) {
           setDialogAlert({
             alert: {
               isOpen: true,
-              message: 'Đặt vé thất bại !!!',
+              message: 'Đặt vé thất bại, vui lòng đăng nhập!!!',
               duration: 5000,
               type: 'error' // info / warning / error / success
             },
@@ -243,7 +243,6 @@ export default function TicketDetails2({ arrayTicket }) {
   }, [])
   return (
     <>
-      {console.log(arrayTicket)}
       {arrayTicket.length !== 0 ?
         arrayTicket.map((item) => {
           return (
@@ -333,7 +332,7 @@ export default function TicketDetails2({ arrayTicket }) {
 
           )
 
-        }) : dataTrip.map((item) => {
+        }) : (arrTicketByType.length !== 0 ? arrTicketByType.map((item) => {
           return (
             <>
               <CardActionArea className='card-container' >
@@ -421,7 +420,96 @@ export default function TicketDetails2({ arrayTicket }) {
 
           )
 
+        }) : 
+        dataTrip.map((item) => {
+          return (
+            <>
+              <CardActionArea className='card-container' >
+                <Grid container  >
+                  <Grid xs={4.5} >
+                    <CardMedia className='card-img'
+                      component="img"
+                      alt=""
+                      src={item.image_path}
+                    />
+                  </Grid>
+                  <Grid xs={7.5}>
+                    <Grid container >
+                      <Grid xs={6} className='card-detail-left'>
+                        <Typography gutterBottom variant="h4" component="div">
+                          {item.company_name}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {`Xe ${item.type} chỗ`}
+                        </Typography>
+                        <div className='card-location'>
+                          <div className='icon-tren'>
+                            <RadioButtonChecked className='card-location-icon' />
+                            <div> &nbsp; {`${item.depart}-${item.begin_time}`}</div>
+                          </div>
+                          <div className='icon-giua' > &nbsp; <br></br>  &nbsp; {item.time} <br></br> &nbsp; </div>
+                          <div className='icon-duoi'>
+                            <PlaceIcon className='card-location-icon' />
+                            <div> &nbsp; {`${item.destination}-${item.end_time}`}</div>
+                          </div>
+                        </div>
+                      </Grid>
+                      <Grid xs={3} sx={{ paddingTop: '185px' }}>
+
+
+                        <Button
+                          type="button"
+                          variant="text"
+                          sx={{ width: 200, fontSize: 9, paddingRight: 6 }}
+                          onClick={() => { setDataDialog(item); handleClickOpen() }}
+                        >
+                          Thông tin chi tiết vé xe {<DirectionsBusIcon />}
+
+                        </Button>
+
+
+
+                      </Grid>
+                      <Grid xs={3} className='card-detail-right'>
+                        <h4 className='price'>{`${item.price}VNĐ`}</h4>
+                        <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
+                        <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2(); getCell(item) }}>Đặt vé</Button>
+
+                      </Grid>
+                    </Grid>
+
+                  </Grid>
+                </Grid>
+
+              </CardActionArea>
+              {/* <DialogTicketDetails
+            dialog={dialog}
+            handleCloseDialog={(data) => closeDialog(data)}
+          /> */}
+              {/* -------------------- global alert -------------------- */}
+              <Snackbar
+                open={dialogAlert.alert.isOpen}
+                autoHideDuration={dialogAlert.alert.duration}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                onClose={() => {
+                  setDialogAlert({ alert: { ...dialogAlert.alert, isOpen: false } })
+                }}
+              >
+                <Alert
+                  severity={dialogAlert.alert.type}
+                  sx={{ width: '100%' }}
+                >
+                  {dialogAlert.alert.message}
+                </Alert>
+              </Snackbar>
+            </>
+
+          )
         })
+          )
       }
 
       {/* ------------------------------Begin dialog chitietvexe------------------------------ */}
@@ -636,7 +724,6 @@ export default function TicketDetails2({ arrayTicket }) {
           {activeStep === 1 ?
             <>
               <p style={{ margin: '3% 0% 0% 5%' }}>
-                {console.log(dataDialog2)}
                 <p>Nhà xe: {dataDialog2.company_name}</p>
                 <p>Loại xe: {dataDialog2.transport_name} {dataDialog2.type} chỗ</p>
                 <p>Điểm đón: {dataDialog2.depart}</p>
@@ -686,8 +773,8 @@ export default function TicketDetails2({ arrayTicket }) {
                         <img src="https://static.mservice.io/img/momo-upload-api-220418155002-637858938029609599.png" alt="Girl in a jacket" width={'500px'} height={'400px'} />
                       </Stack>
                       <Stack direction='row'>
-                        <Button style={{ bottom: '2%', left: '5%', position: 'absolute' }} onClick={(e) => { setActiveStep(activeStep - 1); }}>Quay lại</Button>
-                        <Button style={{ bottom: '2%', right: '5%', position: 'absolute' }} onClick={(e) => { tinhtien() }}>Hoàn tất</Button>
+                        <Button style={{ bottom: '19%', position: 'fixed' }} onClick={(e) => { setActiveStep(activeStep - 1); }}>Quay lại</Button>
+                        <Button style={{ bottom: '19%', right: '32.5%', position: 'fixed' }} onClick={(e) => { tinhtien() }}>Hoàn tất</Button>
                       </Stack>
 
                     </>

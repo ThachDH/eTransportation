@@ -22,7 +22,6 @@ function Router() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/ticketpage" element={<TicketPage />} />
-                <Route path="/ticketdetails" element={<Ticketdetails />} />
                 <Route path="/admin-page" element={<Generals />} />
                 {/* <Route path="/admin-page" render={() => { return <Generals /> }}></Route> */}
                 <Route path="/company-page" element={<CompanyPage />} />
@@ -31,7 +30,6 @@ function Router() {
                 <Route path="/company-ticket" element={<AddTicket />} />
                 <Route path="/user-account-page" element={<UserAccount />} />
                 <Route path="/error-page/:id" element={<ErrorPage />} />
-
 
             </Routes>
         </BrowserRouter>

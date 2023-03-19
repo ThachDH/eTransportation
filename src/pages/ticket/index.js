@@ -2,7 +2,6 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import React from 'react'
 import Footer from '../../components/footer/Footer'
 import Navigation from '../../components/navigation/Nav'
 import SearchBar from '../../components/searchRoute/SearchBar'
@@ -10,6 +9,8 @@ import Ticketdetails2 from './TicketDetails2';
 import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { Container } from 'react-bootstrap';
 import Slider from '@mui/material/Slider';
+import React, { useEffect } from 'react'
+import moment from 'moment';
 
 //begin - slider gia ve
 const followersMarks = [
@@ -86,6 +87,47 @@ export default function TicketPage() {
     const actionSearch = (arrTicketSearch) => {
         setArrayTicket(arrTicketSearch)
     }
+    const [type, setType] = React.useState('')
+    const [arrTicketByType, setArrTicketByType] = React.useState([])
+
+    useEffect(() => {
+        if (type) {
+
+            let url = `http://localhost:8080/api/getAllTripByType`;
+            let dataSend = {
+                type: type
+            }
+            fetch(url, {
+                method: "POST",
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Access-Control-Allow-Origin": "*",
+                },
+                body: JSON.stringify(dataSend),
+
+            })
+                .then(async (res) => {
+                    if (!res.ok) {
+                        const text = await res.text();
+                        throw new `Error`(text);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.data) {
+                         data.result.map(e => {
+                            e.begin_time = moment(e.begin_time).format('DD/MM HH:mm:ss')
+                            e.end_time = moment(e.end_time).format('DD/MM HH:mm:ss')
+                        })
+                        setArrTicketByType(data.result)
+                    } else {
+                        setArrTicketByType([])
+                    }
+                })
+        }
+    }, [type])
+
     return (
         <>
             <Navigation />
@@ -110,10 +152,24 @@ export default function TicketPage() {
                                     defaultValue="female"
                                     name="radio-buttons-group"
                                 >
-                                    <FormControlLabel value="Xe 16 chỗ" control={<Radio />} label="Xe 16 chỗ ngồi" />
-                                    <FormControlLabel value="Xe 26 chỗ" control={<Radio />} label="Xe 26 chỗ ngồi" />
-                                    <FormControlLabel value="Xe 36 chỗ" control={<Radio />} label="Xe 36 chỗ ngồi" />
-                                    <FormControlLabel value="Xe 46 chỗ" control={<Radio />} label="Xe 46 chỗ ngồi" />
+                                    <FormControlLabel value="Xe 7 chỗ" control={<Radio
+                                        onClick={() => setType(7)}
+                                    />} label="Xe 7 chỗ ngồi" />
+                                    <FormControlLabel
+                                        value="Xe 16 chỗ"
+                                        control={<Radio
+                                            onClick={() => setType(16)}
+                                        />} label="Xe 16 chỗ ngồi" />
+                                    <FormControlLabel
+                                        value="Xe 30 chỗ"
+                                        control={<Radio
+                                            onClick={() => setType(30)}
+                                        />} label="Xe 30 chỗ ngồi" />
+                                    <FormControlLabel
+                                        value="Xe 45 chỗ"
+                                        control={<Radio
+                                            onClick={() => setType(45)}
+                                        />} label="Xe 45 chỗ ngồi" />
                                 </RadioGroup>
                             </FormControl>
 
@@ -147,6 +203,7 @@ export default function TicketPage() {
                     <Grid item xs={9.5} >
                         <Ticketdetails2
                             arrayTicket={arrayTicket}
+                            arrTicketByType={arrTicketByType}
                         />
                     </Grid>
                 </Grid>
