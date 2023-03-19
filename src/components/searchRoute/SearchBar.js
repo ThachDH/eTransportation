@@ -127,7 +127,7 @@ export default class SearchBar extends React.Component {
     return (
       <Paper
         elevation={6}
-        sx={{ backgroundColor: '#e9edf1', marginTop: "5px", marginLeft: "50vh", marginBottom: "5px", width: "850px", height: "130px", borderRadius: "10px", position: "relative" }}
+        sx={{ backgroundColor: '#e9edf1', width: "850px", height: "130px", borderRadius: "10px" }}
       >
         <Button
           sx={{ marginLeft: '15px', marginTop: '10px', border: 0 }}

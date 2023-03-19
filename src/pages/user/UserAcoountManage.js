@@ -28,7 +28,7 @@ export class UserAcoountManage extends React.Component {
     super(props);
     this.state = {
       dataTable: [],
-      
+
       // --------- alert state -------
       alert: {
         isOpen: false,
@@ -114,8 +114,8 @@ export class UserAcoountManage extends React.Component {
     let url = `http://localhost:8080/api/user/cancelTicket`;
     let dataSend = {
       user_id: Number(localStorage.getItem('id')),
-      ticket_id : params.row.ticket_id,
-      sit_number : params.row.sit_number
+      ticket_id: params.row.ticket_id,
+      sit_number: params.row.sit_number
     }
     fetch(url, {
       method: "POST",
@@ -133,9 +133,9 @@ export class UserAcoountManage extends React.Component {
         }
         return res.json();
       })
-      .then(data=> {
-        if(data.data) {
-          let temp = this.state.dataTable.filter(e=> e.STT !== params.row.STT)
+      .then(data => {
+        if (data.data) {
+          let temp = this.state.dataTable.filter(e => e.STT !== params.row.STT)
           this.setState({
             dataTable: temp,
             alert: {

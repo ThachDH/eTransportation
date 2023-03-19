@@ -213,7 +213,7 @@ export function Generals() {
             }}
           >
             <Toolbar />
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <div maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               <TabPanel value={value} index={0}>
                 <CompanyManage></CompanyManage>
               </TabPanel>
@@ -221,7 +221,7 @@ export function Generals() {
                 <UserManage></UserManage>
               </TabPanel>
 
-            </Container>
+            </div>
           </Box>
         </Box>
 

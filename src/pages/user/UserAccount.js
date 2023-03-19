@@ -214,15 +214,15 @@ export default function UserAccount() {
                         }}
                     >
                         <Toolbar />
-                        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                        <div maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                             <TabPanel value={value} index={0}>
-                                <UserAcoountManage></UserAcoountManage>
+                                <></>
                             </TabPanel>
                             <TabPanel value={value} index={1}>
                                 <UserAcoountManage></UserAcoountManage>
                             </TabPanel>
 
-                        </Container>
+                        </div>
                     </Box>
                 </Box>
             </ThemeProvider>

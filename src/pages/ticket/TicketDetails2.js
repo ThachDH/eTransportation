@@ -108,8 +108,17 @@ export default function TicketDetails2({ arrayTicket }) {
   const [dataDialog2, setDataDialog2] = React.useState([])
 
   const [open2, setOpen2] = React.useState(false);
+  const [mustLogin, setMustLogin] = React.useState(false);
+  const handleCloseMustLogin = () => {
+    setMustLogin(false);
+  };
+
   const handleClickOpen2 = () => {
-    setOpen2(true);
+    if (localStorage.getItem('id')) {
+      setOpen2(true);
+    } else {
+      setMustLogin(true);
+    }
   };
 
   const handleClose2 = () => {
@@ -169,7 +178,7 @@ export default function TicketDetails2({ arrayTicket }) {
           setDialogAlert({
             alert: {
               isOpen: true,
-              message: 'Đặt vé thất bại, vui lòng đăng nhập!!!',
+              message: 'Đặt vé thất bại !!!',
               duration: 5000,
               type: 'error' // info / warning / error / success
             },
@@ -234,7 +243,7 @@ export default function TicketDetails2({ arrayTicket }) {
   }, [])
   return (
     <>
-    {console.log(arrayTicket)}
+      {console.log(arrayTicket)}
       {arrayTicket.length !== 0 ?
         arrayTicket.map((item) => {
           return (
@@ -306,8 +315,8 @@ export default function TicketDetails2({ arrayTicket }) {
                 open={dialogAlert.alert.isOpen}
                 autoHideDuration={dialogAlert.alert.duration}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
+                  vertical: 'bottom',
+                  horizontal: 'left'
                 }}
                 onClose={() => {
                   setDialogAlert({ alert: { ...dialogAlert.alert, isOpen: false } })
@@ -422,9 +431,8 @@ export default function TicketDetails2({ arrayTicket }) {
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab label="Hình ảnh" {...a11yProps(0)} />
               <Tab label="Điểm đón trả" {...a11yProps(1)} />
-              <Tab label="Đặt vé" {...a11yProps(2)} />
               <DialogActions>
-                <Button onClick={handleClose} sx={{ marginLeft: '300px', color: '#0000008f' }}>&times;</Button>
+                <Button onClick={handleClose} sx={{ position: 'absolute', right: '1%', color: '#0000008f' }}>&times;</Button>
               </DialogActions>
             </Tabs>
           </Box>
@@ -458,9 +466,9 @@ export default function TicketDetails2({ arrayTicket }) {
 
           </TabPanel>
 
-          <TabPanel value={value} index={2}>
+          {/* <TabPanel value={value} index={2}>
             Item Three
-          </TabPanel>
+          </TabPanel> */}
         </Box>
 
 
@@ -469,7 +477,14 @@ export default function TicketDetails2({ arrayTicket }) {
       {/* ------------------------------End dialog chitietvexe------------------------------ */}
 
 
+      <Dialog sx={{ width: '410px', height: '120px', position: 'fixed', top: '35%', left: '40%' }} open={mustLogin} onClose={handleCloseMustLogin}>
+        <DialogTitle>{"Vui lòng  đăng nhập để mua vé !!!"}</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleCloseMustLogin}>Hủy</Button>
+          <Button href='/login'>Đăng nhập</Button>
+        </DialogActions>
 
+      </Dialog>
 
       {/* ------------------------------Begin dialog datve------------------------------ */}
       <Dialog open={open2} onClose={handleClose2}>
@@ -652,26 +667,27 @@ export default function TicketDetails2({ arrayTicket }) {
           {activeStep === 0 ?
             <>
               {selectedCheckboxes.length === 0 ?
-                <Button style={{ bottom: '19%', right: '32.5%', position: 'fixed' }} disabled >Tiếp tục</Button> : <Button style={{ bottom: '19%', right: '32.5%', position: 'fixed' }} onClick={(e) => { setActiveStep(activeStep + 1) }}>Tiếp tục</Button>
+                <Button style={{ bottom: '2%', right: '5%', position: 'absolute' }} disabled >Tiếp tục</Button> :
+                <Button style={{ bottom: '2%', right: '5%', position: 'absolute' }} onClick={(e) => { setActiveStep(activeStep + 1) }}>Tiếp tục</Button>
               }
             </>
             :
             <>
               {activeStep === 1 ?
                 <>
-                  <Button style={{ bottom: '19%', right: '32.5%', position: 'fixed' }} onClick={(e) => { setActiveStep(activeStep + 1) }}>Tiếp tục</Button>
-                  <Button style={{ bottom: '19%', position: 'fixed' }} onClick={(e) => { setActiveStep(activeStep - 1); setSelectedCheckboxes([]) }}>Quay lại</Button>
+                  <Button style={{ bottom: '2%', right: '5%', position: 'absolute' }} onClick={(e) => { setActiveStep(activeStep + 1) }}>Tiếp tục</Button>
+                  <Button style={{ bottom: '2%', left: '5%', position: 'absolute' }} onClick={(e) => { setActiveStep(activeStep - 1); setSelectedCheckboxes([]) }}>Quay lại</Button>
                 </>
                 :
                 <>
                   {activeStep === 2 ?
                     <>
-                    <Stack sx={{textAlign: 'center'}}>
-                    <img src="https://static.mservice.io/img/momo-upload-api-220418155002-637858938029609599.png" alt="Girl in a jacket" width={'500px'} height={'400px'} />
-                    </Stack>
+                      <Stack sx={{ textAlign: 'center' }}>
+                        <img src="https://static.mservice.io/img/momo-upload-api-220418155002-637858938029609599.png" alt="Girl in a jacket" width={'500px'} height={'400px'} />
+                      </Stack>
                       <Stack direction='row'>
-                        <Button style={{ bottom: '19%', position: 'fixed' }} onClick={(e) => { setActiveStep(activeStep - 1); }}>Quay lại</Button>
-                        <Button style={{ bottom: '19%', right: '32.5%', position: 'fixed' }} onClick={(e) => { tinhtien() }}>Hoàn tất</Button>
+                        <Button style={{ bottom: '2%', left: '5%', position: 'absolute' }} onClick={(e) => { setActiveStep(activeStep - 1); }}>Quay lại</Button>
+                        <Button style={{ bottom: '2%', right: '5%', position: 'absolute' }} onClick={(e) => { tinhtien() }}>Hoàn tất</Button>
                       </Stack>
 
                     </>
