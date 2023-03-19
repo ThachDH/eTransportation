@@ -90,7 +90,7 @@ export default function TicketPage() {
         <>
             <Navigation />
             <div className="home-header-img">
-                <div className="home-header-search-bar">
+                <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', top: '40%' }}>
                     <SearchBar
                         handleChange={(arrTicketSearch) => actionSearch(arrTicketSearch)}
                     />
