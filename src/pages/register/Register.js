@@ -67,7 +67,7 @@ export default function Register() {
                 return res.json();
             })
             .then(data => {
-                if(data.data) {
+                if (data.data) {
                     setState({
                         alert: {
                             isOpen: true,
@@ -86,7 +86,7 @@ export default function Register() {
                         }
                     });
                 }
-                
+
             })
             .catch(err => {
                 setState({
@@ -104,7 +104,7 @@ export default function Register() {
     return (
         <>
             <Navigation />
-            
+
             <div className='backgound-login'>
                 <img src={background} alt="background" height="100%" width="100%" ></img>
                 <div className='chil-background-login'>
@@ -128,7 +128,6 @@ export default function Register() {
                                 <Box component="form" noValidate sx={{ mt: 1 }}>
                                     <TextField
                                         margin="normal"
-                                        required
                                         fullWidth
                                         id="email"
                                         label="Họ và Tên"
@@ -216,23 +215,23 @@ export default function Register() {
                             </Box>
                         </Container>
                         <Snackbar
-                        open={kq.alert.isOpen}
-                        autoHideDuration={kq.alert.duration}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right'
-                        }}
-                        onClose={() => {
-                            setState({ alert: { ...kq.alert, isOpen: false } })
-                        }}
-                    >
-                        <Alert
-                            severity={kq.alert.type}
-                            sx={{ width: '100%' }}
+                            open={kq.alert.isOpen}
+                            autoHideDuration={kq.alert.duration}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right'
+                            }}
+                            onClose={() => {
+                                setState({ alert: { ...kq.alert, isOpen: false } })
+                            }}
                         >
-                            {kq.alert.message}
-                        </Alert>
-                    </Snackbar>
+                            <Alert
+                                severity={kq.alert.type}
+                                sx={{ width: '100%' }}
+                            >
+                                {kq.alert.message}
+                            </Alert>
+                        </Snackbar>
                     </ThemeProvider>
                 </div>
             </div>

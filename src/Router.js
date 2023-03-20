@@ -12,6 +12,7 @@ import AddTicket from "./pages/company/AddTicket";
 import UserAccount from "./pages/user/UserAccount";
 import ErrorPage from './pages/errorpage/ErrorPage';
 import { CompanyPage } from "./pages/company/CompanyPage";
+import UserInforManage from "./pages/user/UserInforManage";
 
 function Router() {
     return (
@@ -29,6 +30,8 @@ function Router() {
                 <Route path="/company-trip" element={<AddTrip />} />
                 <Route path="/company-ticket" element={<AddTicket />} />
                 <Route path="/user-account-page" element={<UserAccount />} />
+                <Route path="/user-manageinfo-page" element={<UserInforManage />} />
+
                 <Route path="/error-page/:id" element={<ErrorPage />} />
 
             </Routes>

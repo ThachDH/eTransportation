@@ -29,6 +29,7 @@ import Navigation from '../../components/navigation/Nav';
 import { Nav } from 'react-bootstrap';
 import { Tooltip } from '@mui/material';
 import UserAcoountManage from './UserAcoountManage';
+import UserInforManage from './UserInforManage';
 
 //Begin-AppBar
 const drawerWidth = 240;
@@ -216,7 +217,7 @@ export default function UserAccount() {
                         <Toolbar />
                         <div maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                             <TabPanel value={value} index={0}>
-                                <></>
+                                <UserInforManage></UserInforManage>
                             </TabPanel>
                             <TabPanel value={value} index={1}>
                                 <UserAcoountManage></UserAcoountManage>

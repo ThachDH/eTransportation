@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 export default function Error() {
     const id = useParams();
     localStorage.clear();
-    console.log(id.id)
     return (
         <Box
             sx={{
@@ -30,6 +29,11 @@ export default function Error() {
                         {id.id === '2' &&
                             <Typography variant="h6">
                                 Bạn cần đăng nhập bằng tài khoản công ty để vào trang COMPANY!
+                            </Typography>
+                        }
+                        {id.id === '3' &&
+                            <Typography variant="h6">
+                                Bạn cần đăng nhập bằng tài khoản khách hàng để mua vé!
                             </Typography>
                         }
 
