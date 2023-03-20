@@ -57,6 +57,31 @@ export default function Login() {
 		if (regex.test(emailForGetPass)) {
 			setMessageForGetPass('Gửi thành công. Vui lòng kiểm tra email của bạn!!!')
 			setColorMessageForGetPass('green')
+			let urlForGetPass = `http://localhost:8080/api/user/forgetPassword`;
+			let dataSend = {
+				email: emailForGetPass,
+			}
+			fetch(urlForGetPass, {
+				method: "POST",
+				mode: 'cors',
+				headers: {
+					'Content-Type': 'application/json',
+					"Access-Control-Allow-Origin": "*",
+				},
+				body: JSON.stringify(dataSend),
+
+			})
+				.then(async (res) => {
+					if (!res.ok) {
+						const text = await res.text();
+						throw new `Error`(text);
+					}
+					return res.json();
+
+				})
+				.then((data) => {
+					console.log(data)
+				})
 
 		} else {
 			setMessageForGetPass('Địa chỉ email không hợp lệ. Vui lòng nhập lại!!!')
@@ -166,6 +191,8 @@ export default function Login() {
 										localStorage.setItem('password', res.user.uid);
 										localStorage.setItem('role', dataLogin.role);
 										localStorage.setItem('user_name', dataLogin.user_name ? dataLogin.user_name : dataLogin.companyName);
+										localStorage.setItem('loginByGoogle', 'loginByGoogle');
+
 									}
 								}
 							})
