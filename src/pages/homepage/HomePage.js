@@ -12,19 +12,21 @@ import { Link, useNavigate, NavLink } from 'react-router-dom';
 import Login from "../login";
 
 const HomePage = () => {
-
-    return (
-        <>
-            <Navigation />
-            <div className="home-header-img">
-                <div className="home-header-search-bar">
+    if (localStorage.getItem('role') === 'COMPANY' || localStorage.getItem('role') === 'ADMIN') {
+        return (window.location.href = `/error-page/${3}`)
+    } else
+        return (
+            <>
+                <Navigation />
+                <div className="home-header-img">
+                    <div className="home-header-search-bar">
+                    </div>
                 </div>
-            </div>
-            <PopularRoutes />
-            <News />
-            <Footer />
+                <PopularRoutes />
+                <News />
+                <Footer />
 
-        </>
-    );
+            </>
+        );
 }
 export default HomePage;
