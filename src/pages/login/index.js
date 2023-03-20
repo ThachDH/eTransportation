@@ -191,6 +191,8 @@ export default function Login() {
 										localStorage.setItem('password', res.user.uid);
 										localStorage.setItem('role', dataLogin.role);
 										localStorage.setItem('user_name', dataLogin.user_name ? dataLogin.user_name : dataLogin.companyName);
+										localStorage.setItem('loginByGoogle', 'loginByGoogle');
+
 									}
 								}
 							})

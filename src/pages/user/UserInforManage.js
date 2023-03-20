@@ -148,30 +148,34 @@ export default function UserInforManage() {
                         </Typography>
                         <Typography sx={{ marginLeft: '9px', color: 'text.secondary' }}>************</Typography>
                     </AccordionSummary>
-                    <AccordionDetails>
-                        <TextField
-                            type="password"
-                            label="Nhập mật khẩu cũ"
-                            variant="standard"
-                            focusedfocused
-                            sx={{ marginBottom: '5%', width: '100%' }}
-                            onChange={(e) => { setOldPass(e.target.value); }} />
-                        <TextField
-                            type="password"
-                            label="Nhập mật khẩu mới"
-                            variant="standard"
-                            focusedfocused
-                            sx={{ marginRight: '32%' }}
-                            onChange={(e) => { setNewPass1(e.target.value); }} />
-                        <TextField
-                            type="password"
-                            label="Nhập lại mật khẩu mới"
-                            variant="standard"
-                            focusedfocused
-                            onChange={(e) => { setNewPass2(e.target.value); }} />
-                    </AccordionDetails>
-                    {messageChangePass && <Typography sx={{ padding: '20px', color: colorMessageChangepass }}>{messageChangePass}</Typography>}
-                    <Button onClick={handleChangePass} sx={{ display: 'block', marginLeft: '80%' }}>Xác nhận</Button>
+                    {localStorage.getItem('loginByGoogle') ? <AccordionDetails>Tài khoản được đăng nhập bằng tài khoản Google !!!</AccordionDetails> : <>
+                        <AccordionDetails>
+                            <TextField
+                                type="password"
+                                label="Nhập mật khẩu cũ"
+                                variant="standard"
+                                focusedfocused
+                                sx={{ marginBottom: '5%', width: '100%' }}
+                                onChange={(e) => { setOldPass(e.target.value); }} />
+                            <TextField
+                                type="password"
+                                label="Nhập mật khẩu mới"
+                                variant="standard"
+                                focusedfocused
+                                sx={{ marginRight: '32%' }}
+                                onChange={(e) => { setNewPass1(e.target.value); }} />
+                            <TextField
+                                type="password"
+                                label="Nhập lại mật khẩu mới"
+                                variant="standard"
+                                focusedfocused
+                                onChange={(e) => { setNewPass2(e.target.value); }} />
+                            {messageChangePass && <Typography sx={{ marginTop: '20px', color: colorMessageChangepass }}>{messageChangePass}</Typography>}
+                            <Button onClick={handleChangePass} sx={{ display: 'block', marginTop: '20px', marginLeft: '80%' }}>Xác nhận</Button>
+                        </AccordionDetails>
+                    </>}
+
+
                 </Accordion>
 
             </Container>
