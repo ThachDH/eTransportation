@@ -85,15 +85,27 @@ class AddCompany extends React.Component {
         return res.json();
       })
       .then(data => {
-        this.setState({
-          alert: {
-            isOpen: true,
-            message: 'Thêm mới thành công',
-            duration: 5000,
-            type: 'success' // info / warning / error / success
-          }
-        })
-        this.props.handleCreate(dataSend);
+        if(data.data) {
+          this.setState({
+            alert: {
+              isOpen: true,
+              message: 'Thêm mới thành công',
+              duration: 5000,
+              type: 'success' // info / warning / error / success
+            }
+          })
+          this.props.handleCreate(dataSend);
+        } else {
+          this.setState({
+            alert: {
+              isOpen: true,
+              message: 'Thêm mới thất bại',
+              duration: 5000,
+              type: 'error' // info / warning / error / success
+            }
+          })
+        }
+        
       })
       .catch((err) => {
         this.setState({

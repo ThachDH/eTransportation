@@ -141,7 +141,7 @@ export default function TicketPage() {
             <Container>
                 {/* bo loc */}
                 <div>Bộ lọc</div>
-                <Grid container spacing={4}>
+                <Grid container spacing={4} sx={{mb: 3}}>
                     <Grid item xs={2.5}  >
                         <Grid className='boloc' >
                             {/*radio loai xe */}
@@ -174,29 +174,7 @@ export default function TicketPage() {
                             </FormControl>
 
                             {/*slider gia ve */}
-                            <Box width={'90%'} mt={3} mb={3}>
-                                <FormLabel>Giá vé: từ 0 - {scale(value) == '6000' ? '1000000' : scale(value)}đ</FormLabel>
-                                <Slider
-                                    defaultValue={200}
-                                    min={0}
-                                    step={25}
-                                    max={200}
-                                    valueLabelFormat={numFormatter}
-                                    marks={followersMarks}
-                                    scale={scale}
-                                    onChange={handleChange}
-                                    valueLabelDisplay="auto"
-                                    aria-labelledby="non-linear-slider"
-                                />
-                            </Box>
-
-                            {/*check box nha xe */}
-                            <FormGroup >
-                                <FormLabel>Nhà xe</FormLabel>
-                                <FormControlLabel control={<Checkbox />} label="Phương Trang" />
-                                <FormControlLabel control={<Checkbox />} label="Limosin" />
-                            </FormGroup>
-
+                            
                         </Grid>
                     </Grid>
                     {/* Ticket detail */}

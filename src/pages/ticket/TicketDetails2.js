@@ -294,7 +294,7 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
 
                       </Grid>
                       <Grid xs={3} className='card-detail-right'>
-                        <h4 className='price'>{`${item.price}VNĐ`}</h4>
+                        <h4 className='price'>{`${Number(item.price).toLocaleString()}VNĐ`}</h4>
                         <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
                         <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2(); getCell(item) }}>Đặt vé</Button>
 
@@ -382,7 +382,7 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
 
                       </Grid>
                       <Grid xs={3} className='card-detail-right'>
-                        <h4 className='price'>{`${item.price}VNĐ`}</h4>
+                        <h4 className='price'>{`${Number(item.price).toLocaleString()}VNĐ`}</h4>
                         <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
                         <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2(); getCell(item) }}>Đặt vé</Button>
 
@@ -471,7 +471,7 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
 
                       </Grid>
                       <Grid xs={3} className='card-detail-right'>
-                        <h4 className='price'>{`${item.price}VNĐ`}</h4>
+                        <h4 className='price'>{`${Number(item.price).toLocaleString()}VNĐ`}</h4>
                         <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
                         <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2(); getCell(item) }}>Đặt vé</Button>
 

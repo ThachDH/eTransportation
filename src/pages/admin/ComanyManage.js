@@ -108,23 +108,33 @@ class ComanyManage extends React.Component {
     });
   }
   closeDialog(dataSend) {
-    console.log(dataSend)
-    let temp = this.state.dataTable
-    let a = temp.map(e => {
-      if (e.email === dataSend.email) {
-        e.status = dataSend.status
-      }
-      return e
-    })
-    console.log(a)
-    this.setState({
-      dataTable: a,
-      dialog: {
-        isOpen: false,
-        data: null,
-        type: 0,
-      },
-    });
+    if(dataSend) {
+      let temp = this.state.dataTable
+      let a = temp.map(e => {
+        if (e.email === dataSend.email) {
+          e.status = dataSend.status
+        }
+        return e
+      })
+      console.log(a)
+      this.setState({
+        dataTable: a,
+        dialog: {
+          isOpen: false,
+          data: null,
+          type: 0,
+        },
+      });
+    } else {
+      this.setState({
+        dialog: {
+          isOpen: false,
+          data: null,
+          type: 0,
+        },
+      });
+    }
+    
   }
 
   componentDidMount() {
@@ -321,11 +331,11 @@ class ComanyManage extends React.Component {
                                     fullWidth>
                                     {value === 1 ? (
                                       <div>
-                                        <span>Đang hoạt động</span>
+                                        <span>true</span>
                                         <Brightness1Icon sx={{ color: 'green' }} />
                                       </div>
                                     ) : <div>
-                                      <span>Bị Cấm</span>
+                                      <span>false</span>
                                       <DangerousIcon sx={{ color: 'red' }} />
                                     </div>
                                     }
