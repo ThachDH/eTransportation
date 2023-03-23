@@ -91,7 +91,6 @@ export default function TicketPage() {
     const [arrTicketByType, setArrTicketByType] = React.useState([])
 
     useEffect(() => {
-        if (type) {
 
             let url = `http://localhost:8080/api/getAllTripByType`;
             let dataSend = {
@@ -125,7 +124,6 @@ export default function TicketPage() {
                         setArrTicketByType([])
                     }
                 })
-        }
     }, [type])
 
     return (
@@ -152,6 +150,9 @@ export default function TicketPage() {
                                     defaultValue="female"
                                     name="radio-buttons-group"
                                 >
+                                    <FormControlLabel value="Xe 0 chỗ" control={<Radio
+                                        onClick={() => setType(0)}
+                                    />} label="Tất cả loại xe" />
                                     <FormControlLabel value="Xe 7 chỗ" control={<Radio
                                         onClick={() => setType(7)}
                                     />} label="Xe 7 chỗ ngồi" />

@@ -145,6 +145,15 @@ export class UserAcoountManage extends React.Component {
               message: "Hủy chuyến thành công",
             }
           })
+        } else {
+          this.setState({
+            alert: {
+              isOpen: true,
+              type: "warning",
+              duration: 2000,
+              message: data.message,
+            }
+          })
         }
       })
   }
