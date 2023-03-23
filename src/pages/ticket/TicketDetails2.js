@@ -121,6 +121,8 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
     }
   };
 
+  const [count, setCount] = React.useState(0)
+
   const handleClose2 = () => {
     setActiveStep(0)
     setSelectedCheckboxes([])
@@ -165,6 +167,7 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
       })
       .then(data => {
         if (data.data) {
+          setCount(data.ticket_id.length)
           setOpen2(false)
           setDialogAlert({
             alert: {
@@ -295,7 +298,7 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
                       </Grid>
                       <Grid xs={3} className='card-detail-right'>
                         <h4 className='price'>{`${Number(item.price).toLocaleString()}VNĐ`}</h4>
-                        <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
+                        <p>{`Còn ${item.type - item.seats - count} chỗ trống`}</p>
                         <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2(); getCell(item) }}>Đặt vé</Button>
 
                       </Grid>
@@ -383,7 +386,7 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
                       </Grid>
                       <Grid xs={3} className='card-detail-right'>
                         <h4 className='price'>{`${Number(item.price).toLocaleString()}VNĐ`}</h4>
-                        <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
+                        <p>{`Còn ${item.type - item.seats - count} chỗ trống`}</p>
                         <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2(); getCell(item) }}>Đặt vé</Button>
 
                       </Grid>
@@ -472,7 +475,7 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
                       </Grid>
                       <Grid xs={3} className='card-detail-right'>
                         <h4 className='price'>{`${Number(item.price).toLocaleString()}VNĐ`}</h4>
-                        <p>{`Còn ${item.type - item.seats} chỗ trống`}</p>
+                        <p>{`Còn ${item.type - item.seats -count} chỗ trống`}</p>
                         <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2(); getCell(item) }}>Đặt vé</Button>
 
                       </Grid>

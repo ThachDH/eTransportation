@@ -80,7 +80,7 @@ export default function Register() {
                     setState({
                         alert: {
                             isOpen: true,
-                            message: "Đăng kí thất bại!!!",
+                            message: data.message,
                             duration: 3000,
                             type: 'error',
                         }

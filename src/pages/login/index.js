@@ -55,7 +55,6 @@ export default function Login() {
 	const handleSubmitForgetPass = () => {
 		const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 		if (regex.test(emailForGetPass)) {
-			setMessageForGetPass('Gửi thành công. Vui lòng kiểm tra email của bạn!!!')
 			setColorMessageForGetPass('green')
 			let urlForGetPass = `http://localhost:8080/api/user/forgetPassword`;
 			let dataSend = {
@@ -80,7 +79,12 @@ export default function Login() {
 
 				})
 				.then((data) => {
-					console.log(data)
+					if (data.data) {
+						setMessageForGetPass('Gửi thành công. Vui lòng kiểm tra email của bạn!!!')
+					} else {
+						setColorMessageForGetPass('red')
+						setMessageForGetPass(data.message)
+					}
 				})
 
 		} else {

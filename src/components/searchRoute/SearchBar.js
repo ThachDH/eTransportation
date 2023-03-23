@@ -51,10 +51,8 @@ export default class SearchBar extends React.Component {
   }
   apiRoute() {
     //API view Route
-    let url = `http://localhost:8080/api/company/getRoutesByComId`;
-    let dataSend = {
-      company_id: Number(localStorage.getItem('id'))
-    }
+    let url = `http://localhost:8080/api/company/fetchRoutes`;
+   
     fetch(url, {
       method: "POST",
       mode: 'cors',
@@ -62,7 +60,6 @@ export default class SearchBar extends React.Component {
         'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify(dataSend),
     })
       .then(async (res) => {
         if (!res.ok) {
@@ -72,6 +69,7 @@ export default class SearchBar extends React.Component {
         return res.json();
       })
       .then(data => {
+        console.log('a', data)
         if (data.result.length > 0) {
           let tempdepart = data.result.map(e => e.depart)
           let tempDetination = data.result.map(e => e.destination)
