@@ -44,13 +44,56 @@ export default function UserInforManage() {
                 setPhoneNumber(data.phone_number)
 
             })
-    }, []);
+    });
+    const [newPhone, setNewPhone] = React.useState('');
+    const [messChangePhone, setMessChangePhone] = React.useState('');
+    const [colorChangePhone, setColorChangePhone] = React.useState('');
+
+
     const [oldPass, setOldPass] = React.useState('');
     const [newPass1, setNewPass1] = React.useState('');
     const [newPass2, setNewPass2] = React.useState('');
     const [messageChangePass, setMessageChangepass] = React.useState('');
     const [colorMessageChangepass, setColorMessageChangepass] = React.useState('');
+    const handleChangePhone = () => {
+        const regex = /^0\d{9}$/i;
+        if (!regex.test(newPhone)) {
+            setMessChangePhone('Số điện thoại phải có 10 chữ số và bắt đầu với "0"!')
+            setColorChangePhone('red')
+        } else {
 
+            let url = `http://localhost:8080/api/user/updatePhoneNumber`;
+            let dataSend = {
+                user_id: localStorage.getItem('id'),
+                phone_number: newPhone,
+            }
+            fetch(url, {
+                method: "POST",
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Access-Control-Allow-Origin": "*",
+                },
+                body: JSON.stringify(dataSend),
+
+            })
+                .then(async (res) => {
+                    if (!res.ok) {
+                        const text = await res.text();
+                        throw new `Error`(text);
+                    }
+                    return res.json();
+
+                }).then((data) => {
+                    setMessChangePhone('Cập nhật số điện thoại thành công.')
+                    setColorChangePhone('green')
+                    console.log(data)
+                })
+
+        }
+
+
+    }
 
     const handleChangePass = () => {
         const regex = /^.{6,}/i;
@@ -92,6 +135,7 @@ export default function UserInforManage() {
 
                     }).then((data) => {
                         localStorage.setItem('password', newPass1)
+                        setOldPass(newPass1)
                         setMessageChangepass('Đổi mật khẩu thành công!!!')
                         setColorMessageChangepass('green')
                         console.log(data)
@@ -132,12 +176,24 @@ export default function UserInforManage() {
                 </Accordion>
 
                 <Accordion>
-                    <AccordionSummary>
-                        <Typography sx={{ width: '35%', flexShrink: 0 }}>
+                    <AccordionSummary
+                        expandIcon={<EditIcon></EditIcon>}>
+                        <Typography sx={{ width: '36.5%', flexShrink: 0 }}>
                             Số điện thoại:
                         </Typography>
-                        <Typography sx={{ color: 'text.secondary' }}>{phoneNumber}</Typography>
+                        <Typography sx={{ color: 'text.secondary' }}>{phoneNumber === 0 ? <div>Vui lòng cập nhật số điện thoại</div> : phoneNumber}</Typography>
                     </AccordionSummary>
+                    <AccordionDetails>
+                        <TextField
+                            type="number"
+                            label="Nhập số điện thoại mới"
+                            variant="standard"
+                            focusedfocused
+                            sx={{ width: '100%' }}
+                            onChange={(e) => { setNewPhone(e.target.value); }} />
+                        {setMessChangePhone && <Typography sx={{ marginTop: '20px', color: colorChangePhone }}>{messChangePhone}</Typography>}
+                        <Button onClick={handleChangePhone} sx={{ display: 'block', marginTop: '20px', marginLeft: '80%' }}>Xác nhận</Button>
+                    </AccordionDetails>
                 </Accordion>
 
                 <Accordion>
@@ -148,32 +204,34 @@ export default function UserInforManage() {
                         </Typography>
                         <Typography sx={{ marginLeft: '9px', color: 'text.secondary' }}>************</Typography>
                     </AccordionSummary>
-                    {localStorage.getItem('loginByGoogle') ? <AccordionDetails>Tài khoản được đăng nhập bằng tài khoản Google !!!</AccordionDetails> : <>
-                        <AccordionDetails>
-                            <TextField
-                                type="password"
-                                label="Nhập mật khẩu cũ"
-                                variant="standard"
-                                focusedfocused
-                                sx={{ marginBottom: '5%', width: '100%' }}
-                                onChange={(e) => { setOldPass(e.target.value); }} />
-                            <TextField
-                                type="password"
-                                label="Nhập mật khẩu mới"
-                                variant="standard"
-                                focusedfocused
-                                sx={{ marginRight: '32%' }}
-                                onChange={(e) => { setNewPass1(e.target.value); }} />
-                            <TextField
-                                type="password"
-                                label="Nhập lại mật khẩu mới"
-                                variant="standard"
-                                focusedfocused
-                                onChange={(e) => { setNewPass2(e.target.value); }} />
-                            {messageChangePass && <Typography sx={{ marginTop: '20px', color: colorMessageChangepass }}>{messageChangePass}</Typography>}
-                            <Button onClick={handleChangePass} sx={{ display: 'block', marginTop: '20px', marginLeft: '80%' }}>Xác nhận</Button>
-                        </AccordionDetails>
-                    </>}
+                    {localStorage.getItem('loginByGoogle')
+                        ? <AccordionDetails>Tài khoản được đăng nhập bằng tài khoản Google !!!</AccordionDetails>
+                        : <>
+                            <AccordionDetails>
+                                <TextField
+                                    type="password"
+                                    label="Nhập mật khẩu cũ"
+                                    variant="standard"
+                                    focusedfocused
+                                    sx={{ marginBottom: '5%', width: '100%' }}
+                                    onChange={(e) => { setOldPass(e.target.value); }} />
+                                <TextField
+                                    type="password"
+                                    label="Nhập mật khẩu mới"
+                                    variant="standard"
+                                    focusedfocused
+                                    sx={{ marginRight: '32%' }}
+                                    onChange={(e) => { setNewPass1(e.target.value); }} />
+                                <TextField
+                                    type="password"
+                                    label="Nhập lại mật khẩu mới"
+                                    variant="standard"
+                                    focusedfocused
+                                    onChange={(e) => { setNewPass2(e.target.value); }} />
+                                {messageChangePass && <Typography sx={{ marginTop: '20px', color: colorMessageChangepass }}>{messageChangePass}</Typography>}
+                                <Button onClick={handleChangePass} sx={{ display: 'block', marginTop: '20px', marginLeft: '80%' }}>Xác nhận</Button>
+                            </AccordionDetails>
+                        </>}
 
 
                 </Accordion>
