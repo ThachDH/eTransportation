@@ -2,13 +2,19 @@
     display: none !important;
 }
 
-.sodo {
+.sodonho {
     background-color: rgba(255, 255, 255, 0.797);
     box-shadow: 10px inset;
     border: 1px solid rgba(0, 0, 0, 0.329);
     border-radius: 10px;
-    padding: 10px;
+    width: 100% !important;
 
+
+}
+
+.recharts-surface {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .chuthich {

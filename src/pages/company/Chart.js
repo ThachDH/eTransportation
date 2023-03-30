@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Card, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import React, { PureComponent } from 'react';
 import './Chart.scss'
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -84,28 +84,66 @@ const CustomTooltip = ({ active, payload, label }) => {
 export default class Chart extends PureComponent {
 
     render() {
+
+
         return (
-            <Grid container className='sodo'>
-                <BarChart
-                    width={900}
-                    height={600}
-                    margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                    }}
-                    data={data}
-                    className='sodonho'
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend />
-                    <Bar dataKey="pv" fill="#2c5b90" />
-                </BarChart>
-            </Grid>
+            <>
+                {/* <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Doanh thu năm</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Age"
+                    >
+                        <MenuItem value={2021}>2021</MenuItem>
+                        <MenuItem value={2022}>2022</MenuItem>
+                        <MenuItem value={2023}>2023</MenuItem>
+                    </Select>
+                </FormControl> */}
+                <Grid container>
+
+                    <Grid xs={9}>
+                        <BarChart
+                            className='sodonho'
+                            width={900}
+                            height={500}
+                            margin={{
+                                top: 10,
+                                right: 30,
+                                left: 10,
+                                bottom: 5,
+                            }}
+                            data={data}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip content={<CustomTooltip />} />
+                            <Legend />
+                            <Bar dataKey="pv" fill="#2c5b90" />
+                        </BarChart>
+                    </Grid>
+                    <Grid xs={3}>
+
+                        <Card sx={{ margin: '10px' }}>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Tổng doanh thu
+                                </Typography>
+                                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                    Năm: 2023
+                                </Typography>
+                                <Typography variant="h5" component="div">
+                                    23232332 VND
+                                </Typography>
+
+                            </CardContent>
+
+                        </Card>
+                    </Grid>
+                </Grid>
+            </>
+
 
 
         );
