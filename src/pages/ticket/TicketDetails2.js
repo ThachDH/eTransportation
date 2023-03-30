@@ -169,6 +169,9 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
         if (data.data) {
           setCount(data.ticket_id.length)
           setOpen2(false)
+          setActiveStep(0)
+          setSelectedCheckboxes([])
+          setSeats([])
           setDialogAlert({
             alert: {
               isOpen: true,
@@ -423,96 +426,96 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
 
           )
 
-        }) : 
-        dataTrip.map((item) => {
-          return (
-            <>
-              <CardActionArea className='card-container' >
-                <Grid container  >
-                  <Grid xs={4.5} >
-                    <CardMedia className='card-img'
-                      component="img"
-                      alt=""
-                      src={item.image_path}
-                    />
-                  </Grid>
-                  <Grid xs={7.5}>
-                    <Grid container >
-                      <Grid xs={6} className='card-detail-left'>
-                        <Typography gutterBottom variant="h4" component="div">
-                          {item.company_name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {`Xe ${item.type} chỗ`}
-                        </Typography>
-                        <div className='card-location'>
-                          <div className='icon-tren'>
-                            <RadioButtonChecked className='card-location-icon' />
-                            <div> &nbsp; {`${item.depart}-${item.begin_time}`}</div>
-                          </div>
-                          <div className='icon-giua' > &nbsp; <br></br>  &nbsp; {item.time} <br></br> &nbsp; </div>
-                          <div className='icon-duoi'>
-                            <PlaceIcon className='card-location-icon' />
-                            <div> &nbsp; {`${item.destination}-${item.end_time}`}</div>
-                          </div>
-                        </div>
-                      </Grid>
-                      <Grid xs={3} sx={{ paddingTop: '185px' }}>
-
-
-                        <Button
-                          type="button"
-                          variant="text"
-                          sx={{ width: 200, fontSize: 9, paddingRight: 6 }}
-                          onClick={() => { setDataDialog(item); handleClickOpen() }}
-                        >
-                          Thông tin chi tiết vé xe {<DirectionsBusIcon />}
-
-                        </Button>
-
-
-
-                      </Grid>
-                      <Grid xs={3} className='card-detail-right'>
-                        <h4 className='price'>{`${Number(item.price).toLocaleString()}VNĐ`}</h4>
-                        <p>{`Còn ${item.type - item.seats -count} chỗ trống`}</p>
-                        <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2(); getCell(item) }}>Đặt vé</Button>
-
-                      </Grid>
+        }) :
+          dataTrip.map((item) => {
+            return (
+              <>
+                <CardActionArea className='card-container' >
+                  <Grid container  >
+                    <Grid xs={4.5} >
+                      <CardMedia className='card-img'
+                        component="img"
+                        alt=""
+                        src={item.image_path}
+                      />
                     </Grid>
+                    <Grid xs={7.5}>
+                      <Grid container >
+                        <Grid xs={6} className='card-detail-left'>
+                          <Typography gutterBottom variant="h4" component="div">
+                            {item.company_name}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {`Xe ${item.type} chỗ`}
+                          </Typography>
+                          <div className='card-location'>
+                            <div className='icon-tren'>
+                              <RadioButtonChecked className='card-location-icon' />
+                              <div> &nbsp; {`${item.depart}-${item.begin_time}`}</div>
+                            </div>
+                            <div className='icon-giua' > &nbsp; <br></br>  &nbsp; {item.time} <br></br> &nbsp; </div>
+                            <div className='icon-duoi'>
+                              <PlaceIcon className='card-location-icon' />
+                              <div> &nbsp; {`${item.destination}-${item.end_time}`}</div>
+                            </div>
+                          </div>
+                        </Grid>
+                        <Grid xs={3} sx={{ paddingTop: '185px' }}>
 
+
+                          <Button
+                            type="button"
+                            variant="text"
+                            sx={{ width: 200, fontSize: 9, paddingRight: 6 }}
+                            onClick={() => { setDataDialog(item); handleClickOpen() }}
+                          >
+                            Thông tin chi tiết vé xe {<DirectionsBusIcon />}
+
+                          </Button>
+
+
+
+                        </Grid>
+                        <Grid xs={3} className='card-detail-right'>
+                          <h4 className='price'>{`${Number(item.price).toLocaleString()}VNĐ`}</h4>
+                          <p>{`Còn ${item.type - item.seats - count} chỗ trống`}</p>
+                          <Button variant="contained" onClick={() => { setDataDialog2(item); handleClickOpen2(); getCell(item) }}>Đặt vé</Button>
+
+                        </Grid>
+                      </Grid>
+
+                    </Grid>
                   </Grid>
-                </Grid>
 
-              </CardActionArea>
-              {/* <DialogTicketDetails
+                </CardActionArea>
+                {/* <DialogTicketDetails
             dialog={dialog}
             handleCloseDialog={(data) => closeDialog(data)}
           /> */}
-              {/* -------------------- global alert -------------------- */}
-              <Snackbar
-                open={dialogAlert.alert.isOpen}
-                autoHideDuration={dialogAlert.alert.duration}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                onClose={() => {
-                  setDialogAlert({ alert: { ...dialogAlert.alert, isOpen: false } })
-                }}
-              >
-                <Alert
-                  severity={dialogAlert.alert.type}
-                  sx={{ width: '100%' }}
+                {/* -------------------- global alert -------------------- */}
+                <Snackbar
+                  open={dialogAlert.alert.isOpen}
+                  autoHideDuration={dialogAlert.alert.duration}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right'
+                  }}
+                  onClose={() => {
+                    setDialogAlert({ alert: { ...dialogAlert.alert, isOpen: false } })
+                  }}
                 >
-                  {dialogAlert.alert.message}
-                </Alert>
-              </Snackbar>
-            </>
+                  <Alert
+                    severity={dialogAlert.alert.type}
+                    sx={{ width: '100%' }}
+                  >
+                    {dialogAlert.alert.message}
+                  </Alert>
+                </Snackbar>
+              </>
 
-          )
-        })
-          )
+            )
+          })
+        )
       }
 
       {/* ------------------------------Begin dialog chitietvexe------------------------------ */}
@@ -745,12 +748,21 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
               </p>
 
               <h5 style={{ textAlign: 'center' }}>Tổng giá vé: {`${selectedCheckboxes.length * dataDialog2.price}`} VNĐ</h5>
-              <em className='luuydatve'><p style={{ color: 'rgb(25, 141, 14)' }}>Lưu ý:&nbsp;</p><p>Vui lòng kiểm kỹ thông tin trước khi đặt vé!!! </p> </em>
+              <em className='luuydatve'><p style={{ color: 'rgb(25, 141, 14)' }}>Lưu ý:&nbsp;</p><p>Vui lòng kiểm tra kỹ thông tin trước khi đặt vé!!! </p> </em>
             </>
             : ""
           }
           {/* -----------------------End step 2----------------------- */}
+          {activeStep === 2 ? <div style={{ margin: '50px' }}>
+            <em ><h4 style={{ color: 'rgb(25, 141, 14)' }}>Lưu ý: </h4> </em>
+            <li style={{ marginTop: '10px' }}>Vui lòng kiểm tra kỹ thông tin trước khi đặt vé!!! </li>
+            <li style={{ marginTop: '10px' }}>Vé đã đặt chỉ được hủy trước thời gian khởi hành 24 tiếng. Sau khoảng thời gian này, chúng tôi sẽ không hỗ trợ đổi với bất kì trường hợp nào.</li>
+            <li style={{ marginTop: '10px' }}>Sau khi đặt vé thành công, thông tin vé sẽ được gửi về tài khoản email của bạn. </li>
+            <li style={{ marginTop: '10px' }}>Có mặt tại văn phòng/quầy vé/bến xe trước 30 phút để làm thủ tục lên xe.</li>
+          </div> : <></>
 
+
+          }
 
 
           {/* -----------------------Begin nut button----------------------- */}
@@ -772,14 +784,8 @@ export default function TicketDetails2({ arrayTicket, arrTicketByType }) {
                 <>
                   {activeStep === 2 ?
                     <>
-                      <Stack sx={{ textAlign: 'center' }}>
-                        <img src="https://static.mservice.io/img/momo-upload-api-220418155002-637858938029609599.png" alt="Girl in a jacket" width={'500px'} height={'400px'} />
-                      </Stack>
-                      <Stack direction='row'>
-                        <Button style={{ bottom: '19%', position: 'fixed' }} onClick={(e) => { setActiveStep(activeStep - 1); }}>Quay lại</Button>
-                        <Button style={{ bottom: '19%', right: '32.5%', position: 'fixed' }} onClick={(e) => { tinhtien() }}>Hoàn tất</Button>
-                      </Stack>
-
+                      <Button style={{ bottom: '2%', left: '5%', position: 'absolute' }} onClick={(e) => { setActiveStep(activeStep - 1); }}>Quay lại</Button>
+                      <Button style={{ bottom: '2%', right: '5%', position: 'absolute' }} onClick={(e) => { tinhtien() }}>Hoàn tất</Button>
                     </>
                     :
                     <>
