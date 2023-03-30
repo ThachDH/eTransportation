@@ -34,6 +34,7 @@ import AddTrip from './AddTrip';
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
 import DepartureBoardIcon from '@mui/icons-material/DepartureBoard';
 import ExploreIcon from '@mui/icons-material/Explore';
+import Chart from './Chart';
 //Begin-AppBar
 const drawerWidth = 200;
 
@@ -225,7 +226,8 @@ export function CompanyPage() {
                                 <AddRoute></AddRoute>
                             </TabPanel>
                             <TabPanel value={value} index={1}>
-                                <AddTicket></AddTicket>
+                                {/* <AddTicket></AddTicket> */}
+                                <Chart></Chart>
                             </TabPanel>
                             <TabPanel value={value} index={2}>
                                 <AddTrip></AddTrip>
