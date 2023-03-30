@@ -113,6 +113,9 @@ class ComanyManage extends React.Component {
       let a = temp.map(e => {
         if (e.email === dataSend.email) {
           e.status = dataSend.status
+          e.address = dataSend.address
+          e.hotline = dataSend.hotline
+          e.name = dataSend.name
         }
         return e
       })

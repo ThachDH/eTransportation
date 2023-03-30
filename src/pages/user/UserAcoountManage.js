@@ -93,9 +93,8 @@ export class UserAcoountManage extends React.Component {
         headerName: 'Hủy chuyến',
         width: 80,
         getActions: (params) => [
-
           <Button
-            onClick={() => { this.handleDelete(params); console.log(params) }}
+            onClick={() => { this.handleDelete(params) }}
           >
             < DeleteIcon sx={{ color: " red" }} />
           </Button>
@@ -111,6 +110,16 @@ export class UserAcoountManage extends React.Component {
   }
 
   handleDelete(params) {
+    if (moment().toDate().getTime() > moment(params.row.begin_time, 'DD-MM-YYYY HH:mm:ss').toDate().getTime()) {
+      return this.setState({
+        alert: {
+          isOpen: true,
+          type: "error",
+          duration: 2000,
+          message: 'Vé đã quá hạn!',
+        }
+      })
+    }
     let url = `http://localhost:8080/api/user/cancelTicket`;
     let dataSend = {
       user_id: Number(localStorage.getItem('id')),
@@ -187,6 +196,7 @@ export class UserAcoountManage extends React.Component {
           let temp = this.createRows(data.ticket);
           temp.map(e => {
             e.order_date = moment(e.order_date).format("DD-MM-YYYY HH:mm:ss")
+            e.begin_time = moment(e.begin_time).format("DD-MM-YYYY HH:mm:ss")
           })
           this.setState({
             dataTable: temp,

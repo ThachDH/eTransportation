@@ -181,7 +181,7 @@ export default function UserInforManage() {
                         <Typography sx={{ width: '36.5%', flexShrink: 0 }}>
                             Số điện thoại:
                         </Typography>
-                        <Typography sx={{ color: 'text.secondary' }}>{phoneNumber === 0 ? <div>Vui lòng cập nhật số điện thoại</div> : phoneNumber}</Typography>
+                        <Typography sx={{ color: 'text.secondary' }}>{phoneNumber === '0' || phoneNumber === '000000'? <div>Vui lòng cập nhật số điện thoại</div> : phoneNumber}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <TextField
